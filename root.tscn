@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://chc5a3xqiv7b"]
+
+[ext_resource type="Script" path="res://root.gd" id="1_fuq0u"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_i2j84"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_us8lo"]
+
+[node name="Root" type="Node2D"]
+script = ExtResource("1_fuq0u")
+metadata/_edit_vertical_guides_ = [-504.0]
+
+[node name="Paddle1" type="MeshInstance2D" parent="."]
+position = Vector2(270, 950)
+scale = Vector2(100, 20)
+mesh = SubResource("BoxMesh_i2j84")
+
+[node name="Paddle2" type="MeshInstance2D" parent="."]
+position = Vector2(270, 10)
+scale = Vector2(100, 20)
+mesh = SubResource("BoxMesh_i2j84")
+
+[node name="Ball" type="MeshInstance2D" parent="."]
+position = Vector2(270, 480)
+scale = Vector2(30, 30)
+mesh = SubResource("SphereMesh_us8lo")
