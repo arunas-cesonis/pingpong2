@@ -1,10 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=6 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_fuq0u"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_i2j84"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_us8lo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xud0k"]
 radius = 15.0
@@ -12,12 +10,8 @@ radius = 15.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_snhc6"]
 size = Vector2(20, 960)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qkxc2"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_f1sea"]
 radius = 30.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_ctscq"]
-radius = 30.0
-height = 60.0
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_fuq0u")
@@ -31,18 +25,11 @@ mesh = SubResource("BoxMesh_i2j84")
 [node name="Ball" type="CharacterBody2D" parent="."]
 position = Vector2(270, 470)
 
-[node name="SphereMesh" type="MeshInstance2D" parent="Ball"]
-scale = Vector2(30, 30)
-mesh = SubResource("SphereMesh_us8lo")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
 shape = SubResource("CircleShape2D_xud0k")
 
 [node name="WallLeft" type="StaticBody2D" parent="."]
 position = Vector2(0, 480)
-
-[node name="Polygon2D" type="Polygon2D" parent="WallLeft"]
-polygon = PackedVector2Array(-10, -480, 10, -480, 10, 480, -10, 480)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
 shape = SubResource("RectangleShape2D_snhc6")
@@ -60,7 +47,5 @@ shape = SubResource("RectangleShape2D_snhc6")
 position = Vector2(270, 960)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle1"]
-shape = SubResource("CircleShape2D_qkxc2")
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Paddle1"]
-mesh = SubResource("SphereMesh_ctscq")
+scale = Vector2(2, 1)
+shape = SubResource("CircleShape2D_f1sea")
