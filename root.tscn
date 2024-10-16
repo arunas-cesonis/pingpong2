@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=8 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_fuq0u"]
 
@@ -12,6 +12,13 @@ radius = 15.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_snhc6"]
 size = Vector2(20, 960)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_qkxc2"]
+radius = 30.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_ctscq"]
+radius = 30.0
+height = 60.0
+
 [node name="Root" type="Node2D"]
 script = ExtResource("1_fuq0u")
 metadata/_edit_vertical_guides_ = [-504.0]
@@ -20,16 +27,6 @@ metadata/_edit_vertical_guides_ = [-504.0]
 position = Vector2(270, 10)
 scale = Vector2(100, 20)
 mesh = SubResource("BoxMesh_i2j84")
-
-[node name="Paddle1" type="CharacterBody2D" parent="."]
-position = Vector2(270, 950)
-
-[node name="Polygon2D" type="Polygon2D" parent="Paddle1"]
-color = Color(0.079629, 0.49505, 0.213822, 1)
-polygon = PackedVector2Array(-50, -10, 50, -10, 50, 10, -50, 10)
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Paddle1"]
-polygon = PackedVector2Array(-50, -10, 50, -10, 50, 10, -50, 10)
 
 [node name="Ball" type="CharacterBody2D" parent="."]
 position = Vector2(270, 470)
@@ -58,3 +55,12 @@ polygon = PackedVector2Array(-10, -480, 10, -480, 10, 480, -10, 480)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
 shape = SubResource("RectangleShape2D_snhc6")
+
+[node name="Paddle1" type="CharacterBody2D" parent="."]
+position = Vector2(270, 960)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle1"]
+shape = SubResource("CircleShape2D_qkxc2")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Paddle1"]
+mesh = SubResource("SphereMesh_ctscq")
