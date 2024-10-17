@@ -12,8 +12,9 @@ var halt = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	walls.push_back(self.find_child("WallLeft"))
-	walls.push_back(self.find_child("WallRight"))
+	walls.push_back($WallLeft)
+	walls.push_back($WallRight)
+	walls.push_back($WallTop)
 	ball = self.find_child("Ball")
 	ball.velocity = ball_speed * ball_direction
 	get_window().position -= get_window().position / 2
@@ -35,6 +36,9 @@ func _physics_process(delta: float) -> void:
 			elif col.get_normal() == Vector2.LEFT:
 				ball_direction.x = -ball_direction.x
 				ball_direction = ball_direction.normalized()
+			elif col.get_normal() == Vector2.DOWN:
+				ball_direction.y = -ball_direction.y
+				ball_direction = ball_direction.normalized()
 		elif p1 == col.get_collider():
 			var d = ball_direction
 			var n = col.get_normal()
@@ -49,8 +53,7 @@ func _physics_process(delta: float) -> void:
 			print(col.get_normal())
 			self.add_child(line)
 			self.add_child(node)
-			
-			
+
 	ball.velocity = ball_direction * ball_speed
 			# print(ball_direction.angle(), col.get_normal())
 # Called every frame. 'delta' is the elapsed time since the previous frame.
