@@ -47,5 +47,4 @@ shape = SubResource("RectangleShape2D_snhc6")
 position = Vector2(270, 960)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle1"]
-scale = Vector2(2, 1)
 shape = SubResource("CircleShape2D_f1sea")
