@@ -2,24 +2,18 @@
 
 [ext_resource type="Script" path="res://root.gd" id="1_fuq0u"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_xud0k"]
-radius = 15.0
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_snhc6"]
 size = Vector2(20, 960)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_f1sea"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2yc25"]
+size = Vector2(200, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wka3s"]
 radius = 30.0
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_fuq0u")
 metadata/_edit_vertical_guides_ = [-504.0]
-
-[node name="Ball" type="CharacterBody2D" parent="."]
-position = Vector2(270, 470)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
-shape = SubResource("CircleShape2D_xud0k")
 
 [node name="WallLeft" type="StaticBody2D" parent="."]
 position = Vector2(0, 480)
@@ -40,8 +34,14 @@ rotation = 1.5708
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop"]
 shape = SubResource("RectangleShape2D_snhc6")
 
-[node name="Paddle1" type="CharacterBody2D" parent="."]
+[node name="Player" type="AnimatableBody2D" parent="."]
 position = Vector2(270, 960)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle1"]
-shape = SubResource("CircleShape2D_f1sea")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_2yc25")
+
+[node name="Ball" type="AnimatableBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+position = Vector2(270, 100)
+shape = SubResource("CircleShape2D_wka3s")
