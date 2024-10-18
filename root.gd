@@ -3,6 +3,8 @@ extends Node2D
 ## 1. Add objects that have health points and can be killed
 ## 2. Ball collision vs rotating shapes
 
+const Brick = preload("res://brick.gd")
+
 @onready var player: AnimatableBody2D = $Player
 @onready var ball: AnimatableBody2D = $Ball
 @onready var debug: Node2D = $Debug
@@ -32,8 +34,12 @@ func _physics_process(delta: float) -> void:
 			var offset = player.position.x - collision.get_position().x
 			var shape: RectangleShape2D = player.get_child(0).shape
 			var offset_normalized = offset / shape.size.x
-			var normal_offseted = Vector2.from_angle(normal.angle() - offset_normalized * reflect_amount)
+			var angle_adjustment = offset_normalized * reflect_amount
+			var normal_offseted = Vector2.from_angle(normal.angle() - angle_adjustment)
 			normal = normal_offseted
+		elif collision.get_collider() is Brick:
+			var brick := collision.get_collider() as Brick
+			brick.apply_damage(51.0)
 			
 		$Debug.bounce.velocity_in = ball_velocity
 		ball_velocity = ball_velocity.bounce(normal)
