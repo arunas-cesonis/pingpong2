@@ -41,11 +41,13 @@ shape = SubResource("RectangleShape2D_snhc6")
 
 [node name="Player" type="AnimatableBody2D" parent="."]
 position = Vector2(270, 960)
+sync_to_physics = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_2yc25")
 
 [node name="Ball" type="AnimatableBody2D" parent="."]
+sync_to_physics = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
 position = Vector2(270, 100)
