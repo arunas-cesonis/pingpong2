@@ -47,6 +47,8 @@ func _physics_process(delta: float) -> void:
 		$Debug.bounce.position = collision.get_position()
 		$Debug.bounce.normal = normal
 		$Debug.queue_redraw()
+	if ball.position.y > player.position.y:
+		get_tree().reload_current_scene()
 		
 func _process(_delta: float) -> void:
 	var direction = 0.0
