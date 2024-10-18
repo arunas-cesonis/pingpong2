@@ -1,17 +1,19 @@
 extends Node2D
 
+## 1. Add objects that have health points and can be killed
+## 2. Ball collision vs rotating shapes
+
 @onready var player: AnimatableBody2D = $Player
 @onready var ball: AnimatableBody2D = $Ball
 @onready var debug: Node2D = $Debug
 
-@export var ball_direction = Vector2(0.0, 1.0)
-@export var ball_speed = 500.0
-@export var player_speed = 500.0
-@export var reflect_amount = 0.5
+@export var ball_direction := Vector2(0.0, 1.0)
+@export var ball_speed := 500.0
+@export var player_speed := 500.0
+@export var reflect_amount := 0.5
 
-var player_velocity = Vector2.ZERO
-var ball_velocity = ball_direction * ball_speed
-var halt = false
+@onready var player_velocity = Vector2.ZERO
+@onready var ball_velocity = ball_direction * ball_speed
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
