@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=6 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_fuq0u"]
+[ext_resource type="Script" path="res://debug.gd" id="2_jt1rn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_snhc6"]
 size = Vector2(20, 960)
@@ -9,11 +10,14 @@ size = Vector2(20, 960)
 size = Vector2(200, 20)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wka3s"]
-radius = 30.0
+radius = 25.0
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_fuq0u")
 metadata/_edit_vertical_guides_ = [-504.0]
+
+[node name="Debug" type="Node2D" parent="."]
+script = ExtResource("2_jt1rn")
 
 [node name="WallLeft" type="StaticBody2D" parent="."]
 position = Vector2(0, 480)
