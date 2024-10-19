@@ -26,10 +26,13 @@ func _input(_event) -> void:
 func _physics_process(delta: float) -> void:
 	player.move_and_collide(player_velocity * delta)
 
-	var collision = ball.move_and_collide(ball_direction * ball_speed * delta, false, 1.0)
+	# safe_margin = 1.0 here helps to unstuck the ball from rotating platforms
+	# and possibly player controlled platform
+	var safe_margin := 1.0
+	var collision = ball.move_and_collide(ball_direction * ball_speed * delta, 
+		false, safe_margin)
 	if collision:
 		var normal: Vector2 = collision.get_normal()
-		var valid := true
 		if collision.get_collider() == player:
 			var offset = player.position.x - collision.get_position().x
 			var shape: RectangleShape2D = player.get_child(0).shape
@@ -43,13 +46,12 @@ func _physics_process(delta: float) -> void:
 		elif collision.get_collider() == $Ab1:
 			pass
 
-		if valid:
-			$Debug.bounce.velocity_in = ball_direction * ball_speed
-			ball_direction = ball_direction.bounce(normal).normalized()
-			$Debug.bounce.velocity_out = ball_direction * ball_speed
-			$Debug.bounce.position = collision.get_position()
-			$Debug.bounce.normal = normal
-			$Debug.queue_redraw()
+		$Debug.bounce.velocity_in = ball_direction * ball_speed
+		ball_direction = ball_direction.bounce(normal).normalized()
+		$Debug.bounce.velocity_out = ball_direction * ball_speed
+		$Debug.bounce.position = collision.get_position()
+		$Debug.bounce.normal = normal
+		$Debug.queue_redraw()
 
 	if ball.position.y > player.position.y:
 		get_tree().reload_current_scene()
