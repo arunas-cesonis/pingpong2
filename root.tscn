@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=8 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_fuq0u"]
 [ext_resource type="Script" path="res://debug.gd" id="2_jt1rn"]
@@ -12,6 +12,9 @@ size = Vector2(200, 20)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wka3s"]
 radius = 25.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l76xc"]
+size = Vector2(200, 20)
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_fuq0u")
@@ -55,13 +58,18 @@ position = Vector2(270, 100)
 shape = SubResource("CircleShape2D_wka3s")
 
 [node name="Brick" parent="." instance=ExtResource("3_dkdet")]
-position = Vector2(158, 309)
+position = Vector2(182, 93)
 
 [node name="Brick2" parent="." instance=ExtResource("3_dkdet")]
-position = Vector2(157, 350)
+position = Vector2(181, 134)
 
 [node name="Brick3" parent="." instance=ExtResource("3_dkdet")]
-position = Vector2(322, 341)
+position = Vector2(346, 125)
 
 [node name="Brick4" parent="." instance=ExtResource("3_dkdet")]
-position = Vector2(321, 382)
+position = Vector2(345, 166)
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
+shape = SubResource("RectangleShape2D_l76xc")
