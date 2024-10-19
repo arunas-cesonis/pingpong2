@@ -1,8 +1,5 @@
 extends Node2D
 
-## 1. Add objects that have health points and can be killed
-## 2. Ball collision vs rotating shapes
-
 const Brick = preload("res://brick.gd")
 
 @onready var player: AnimatableBody2D = $Player
@@ -46,7 +43,7 @@ func _physics_process(delta: float) -> void:
 		elif collision.get_collider() == $Ab1:
 			pass
 
-		if valid: 
+		if valid:
 			$Debug.bounce.velocity_in = ball_direction * ball_speed
 			ball_direction = ball_direction.bounce(normal).normalized()
 			$Debug.bounce.velocity_out = ball_direction * ball_speed
