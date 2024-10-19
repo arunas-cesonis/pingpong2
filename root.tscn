@@ -56,16 +56,16 @@ position = Vector2(270, 100)
 shape = SubResource("CircleShape2D_wka3s")
 
 [node name="Brick" parent="." instance=ExtResource("3_dkdet")]
-position = Vector2(182, 93)
+position = Vector2(212, 126)
 
 [node name="Brick2" parent="." instance=ExtResource("3_dkdet")]
-position = Vector2(181, 134)
+position = Vector2(211, 167)
 
 [node name="Brick3" parent="." instance=ExtResource("3_dkdet")]
-position = Vector2(346, 125)
+position = Vector2(318, 125)
 
 [node name="Brick4" parent="." instance=ExtResource("3_dkdet")]
-position = Vector2(345, 166)
+position = Vector2(317, 166)
 
 [node name="RotatingBrick" parent="." instance=ExtResource("4_t7kjk")]
 position = Vector2(266, 359)

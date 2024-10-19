@@ -1,6 +1,9 @@
 extends Node2D
 
+# 1. Paprasta dx-ball
+
 const Brick = preload("res://brick.gd")
+const RotatingBrick = preload("res://rotating_brick.gd")
 
 @onready var player: AnimatableBody2D = $Player
 @onready var ball: AnimatableBody2D = $Ball
