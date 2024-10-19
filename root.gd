@@ -29,7 +29,7 @@ func _physics_process(delta: float) -> void:
 	# safe_margin = 1.0 here helps to unstuck the ball from rotating platforms
 	# and possibly player controlled platform
 	var safe_margin := 1.0
-	var collision = ball.move_and_collide(ball_direction * ball_speed * delta, 
+	var collision = ball.move_and_collide(ball_direction * ball_speed * delta,
 		false, safe_margin)
 	if collision:
 		var normal: Vector2 = collision.get_normal()
@@ -43,8 +43,6 @@ func _physics_process(delta: float) -> void:
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
 			brick.apply_damage(51.0)
-		elif collision.get_collider() == $Ab1:
-			pass
 
 		$Debug.bounce.velocity_in = ball_direction * ball_speed
 		ball_direction = ball_direction.bounce(normal).normalized()
@@ -63,4 +61,3 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_pressed("MoveRight"):
 		direction = 1.0
 	player_velocity.x = direction * player_speed
-	$Rt1.rotation += _delta * 4.0

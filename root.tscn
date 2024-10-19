@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://root.gd" id="1_fuq0u"]
 [ext_resource type="Script" path="res://debug.gd" id="2_jt1rn"]
 [ext_resource type="PackedScene" uid="uid://bd2vvxg46gdxp" path="res://brick.tscn" id="3_dkdet"]
+[ext_resource type="PackedScene" uid="uid://b1p4pj38fph6l" path="res://rotating_brick.tscn" id="4_t7kjk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_snhc6"]
 size = Vector2(20, 960)
@@ -12,9 +13,6 @@ size = Vector2(200, 20)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wka3s"]
 radius = 25.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_l76xc"]
-size = Vector2(200, 20)
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_fuq0u")
@@ -69,13 +67,5 @@ position = Vector2(346, 125)
 [node name="Brick4" parent="." instance=ExtResource("3_dkdet")]
 position = Vector2(345, 166)
 
-[node name="Ab1" type="AnimatableBody2D" parent="."]
-position = Vector2(271, 368)
-sync_to_physics = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ab1"]
-shape = SubResource("RectangleShape2D_l76xc")
-
-[node name="Rt1" type="RemoteTransform2D" parent="."]
-position = Vector2(271, 368)
-remote_path = NodePath("../Ab1")
+[node name="RotatingBrick" parent="." instance=ExtResource("4_t7kjk")]
+position = Vector2(266, 359)
