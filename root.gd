@@ -9,13 +9,14 @@ const Brick = preload("res://brick.gd")
 @onready var ball: AnimatableBody2D = $Ball
 @onready var debug: Node2D = $Debug
 
-@export var ball_direction := Vector2(0.0, 1.0)
-@export var ball_speed := 500.0
+@export var initial_ball_direction := Vector2(0.0, 1.0)
+@export var initial_ball_speed := 500.0
 @export var player_speed := 500.0
 @export var reflect_amount := 0.5
 
 @onready var player_velocity = Vector2.ZERO
-@onready var ball_velocity = ball_direction * ball_speed
+@onready var ball_speed = initial_ball_speed
+@onready var ball_direction = initial_ball_direction
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -27,9 +28,11 @@ func _input(_event) -> void:
 
 func _physics_process(delta: float) -> void:
 	player.move_and_collide(player_velocity * delta)
-	var collision = ball.move_and_collide(ball_velocity * delta)
+
+	var collision = ball.move_and_collide(ball_direction * ball_speed * delta, false, 1.0)
 	if collision:
 		var normal: Vector2 = collision.get_normal()
+		var valid := true
 		if collision.get_collider() == player:
 			var offset = player.position.x - collision.get_position().x
 			var shape: RectangleShape2D = player.get_child(0).shape
@@ -40,13 +43,17 @@ func _physics_process(delta: float) -> void:
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
 			brick.apply_damage(51.0)
-			
-		$Debug.bounce.velocity_in = ball_velocity
-		ball_velocity = ball_velocity.bounce(normal)
-		$Debug.bounce.velocity_out = ball_velocity
-		$Debug.bounce.position = collision.get_position()
-		$Debug.bounce.normal = normal
-		$Debug.queue_redraw()
+		elif collision.get_collider() == $Ab1:
+			pass
+
+		if valid: 
+			$Debug.bounce.velocity_in = ball_direction * ball_speed
+			ball_direction = ball_direction.bounce(normal).normalized()
+			$Debug.bounce.velocity_out = ball_direction * ball_speed
+			$Debug.bounce.position = collision.get_position()
+			$Debug.bounce.normal = normal
+			$Debug.queue_redraw()
+
 	if ball.position.y > player.position.y:
 		get_tree().reload_current_scene()
 		
@@ -57,3 +64,4 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_pressed("MoveRight"):
 		direction = 1.0
 	player_velocity.x = direction * player_speed
+	$Rt1.rotation += _delta * 4.0

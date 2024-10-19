@@ -69,7 +69,13 @@ position = Vector2(346, 125)
 [node name="Brick4" parent="." instance=ExtResource("3_dkdet")]
 position = Vector2(345, 166)
 
-[node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
+[node name="Ab1" type="AnimatableBody2D" parent="."]
+position = Vector2(271, 368)
+sync_to_physics = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ab1"]
 shape = SubResource("RectangleShape2D_l76xc")
+
+[node name="Rt1" type="RemoteTransform2D" parent="."]
+position = Vector2(271, 368)
+remote_path = NodePath("../Ab1")
