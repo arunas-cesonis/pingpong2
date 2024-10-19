@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1p4pj38fph6l"]
+
+[ext_resource type="Script" path="res://rotating_brick.gd" id="1_7t0cf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l76xc"]
+size = Vector2(200, 20)
+
+[node name="RotatingBrick" type="AnimatableBody2D"]
+sync_to_physics = false
+script = ExtResource("1_7t0cf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_l76xc")
