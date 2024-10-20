@@ -1,6 +1,11 @@
 extends Node2D
 
-# 1. Paprasta dx-ball
+# TODO
+# 1. Goal is dx-ball
+# 2. Configurable signals (on-hit, etc..)
+# 3. Five health points for bricks = five sprites
+# 4. Limit reflection angle by adjusting limit through property
+# 5. Acceleration on reflection, configurable
 
 const Brick = preload("res://brick.gd")
 const RotatingBrick = preload("res://rotating_brick.gd")
