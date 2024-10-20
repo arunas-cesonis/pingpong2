@@ -6,6 +6,7 @@ extends Node2D
 # 3. Five health points for bricks = five sprites
 # 4. Limit reflection angle by adjusting limit through property
 # 5. Acceleration on reflection, configurable
+# 6. Acceleration on input
 
 const Brick = preload("res://brick.gd")
 const RotatingBrick = preload("res://rotating_brick.gd")
