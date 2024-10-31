@@ -21,6 +21,7 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 @export var reflect_amount := 0.5
 
 @onready var player_velocity = Vector2.ZERO
+@onready var player_velocity_avg = Vector2.ZERO
 @onready var ball_speed = initial_ball_speed
 @onready var ball_direction = initial_ball_direction
 
@@ -70,3 +71,5 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_pressed("MoveRight"):
 		direction = 1.0
 	player_velocity.x = direction * player_speed
+	player_velocity_avg = (player_velocity_avg + player_velocity) * 0.05 * _delta
+	$Debug.update_value("player_velocity_avg", player_velocity_avg)
