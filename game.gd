@@ -31,6 +31,8 @@ var score := 0
 @onready var ball_speed = initial_ball_speed
 @onready var ball_direction = initial_ball_direction
 
+signal finished(score: int)
+
 func brick_remaining() -> int:
 	return bricks.get_child_count()
 
@@ -72,7 +74,7 @@ func _physics_process(delta: float) -> void:
 		$Debug.queue_redraw()
 
 	if ball.position.y > player.position.y or bricks.get_child_count() == 0:
-		get_tree().reload_current_scene()
+		finished.emit(score)
 
 func _process(_delta: float) -> void:
 	var direction = 0.0

@@ -6,10 +6,11 @@
 script = ExtResource("1_tmgii")
 
 [node name="PlayButton" type="Button" parent="."]
-offset_left = 178.0
-offset_top = 347.0
-offset_right = 376.0
-offset_bottom = 497.0
+offset_left = 135.0
+offset_top = 296.0
+offset_right = 333.0
+offset_bottom = 446.0
+scale = Vector2(2, 2)
 text = "Play"
 
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
