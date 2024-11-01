@@ -13,6 +13,10 @@ config_version=5
 config/name="pingpong2"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+boot_splash/bg_color=Color(0.00784314, 0.00784314, 0.0117647, 1)
+boot_splash/show_image=false
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 
 [display]
 
@@ -45,3 +49,4 @@ Reset={
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.00784314, 0.00784314, 0.0117647, 1)
