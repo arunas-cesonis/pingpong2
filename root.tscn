@@ -48,11 +48,10 @@ sync_to_physics = false
 shape = SubResource("RectangleShape2D_2yc25")
 
 [node name="Ball" type="AnimatableBody2D" parent="."]
-position = Vector2(0, 500)
+position = Vector2(270, 480)
 sync_to_physics = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
-position = Vector2(270, 100)
 shape = SubResource("CircleShape2D_wka3s")
 
 [node name="Brick" parent="." instance=ExtResource("3_dkdet")]

@@ -21,7 +21,10 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 @export var reflect_amount := 0.5
 
 @onready var player_velocity = Vector2.ZERO
+
+# To be used to add acceleration to ball
 @onready var player_velocity_avg = Vector2.ZERO
+
 @onready var ball_speed = initial_ball_speed
 @onready var ball_direction = initial_ball_direction
 
