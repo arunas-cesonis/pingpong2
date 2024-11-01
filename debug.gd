@@ -38,4 +38,4 @@ func _draw():
 	var h = 32.0
 	for k in values:
 		draw_string(default_font, Vector2(32.0, h), k + ": " + str(values[k]), HORIZONTAL_ALIGNMENT_LEFT, -1, default_font_size)
-		h = h + 32.0
+		h = h + 24.0
