@@ -1,0 +1,98 @@
+[gd_scene load_steps=7 format=3 uid="uid://chc5a3xqiv7b"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_jahp3"]
+[ext_resource type="PackedScene" uid="uid://bd2vvxg46gdxp" path="res://brick.tscn" id="2_2dy8e"]
+[ext_resource type="Script" path="res://debug.gd" id="3_xqd3c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_snhc6"]
+size = Vector2(20, 960)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2yc25"]
+size = Vector2(200, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wka3s"]
+radius = 25.0
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_jahp3")
+metadata/_edit_vertical_guides_ = [-504.0]
+
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(0, 480)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
+shape = SubResource("RectangleShape2D_snhc6")
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(540, 480)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("RectangleShape2D_snhc6")
+
+[node name="WallTop" type="StaticBody2D" parent="."]
+position = Vector2(270, 0)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop"]
+shape = SubResource("RectangleShape2D_snhc6")
+
+[node name="Player" type="AnimatableBody2D" parent="."]
+position = Vector2(270, 960)
+sync_to_physics = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_2yc25")
+
+[node name="Ball" type="AnimatableBody2D" parent="."]
+position = Vector2(270, 480)
+sync_to_physics = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("CircleShape2D_wka3s")
+
+[node name="Bricks" type="Node2D" parent="."]
+
+[node name="Brick" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(111, 70)
+
+[node name="Brick2" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(449, 73)
+
+[node name="Brick3" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(220, 69)
+
+[node name="Brick4" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(336, 72)
+
+[node name="Brick5" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(103, 114)
+
+[node name="Brick6" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(441, 117)
+
+[node name="Brick7" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(212, 113)
+
+[node name="Brick8" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(328, 116)
+
+[node name="Brick9" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(103, 158)
+
+[node name="Brick10" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(441, 161)
+
+[node name="Brick11" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(212, 157)
+
+[node name="Brick12" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(328, 160)
+
+[node name="Brick13" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(213, 208)
+
+[node name="Brick14" parent="Bricks" instance=ExtResource("2_2dy8e")]
+position = Vector2(329, 211)
+
+[node name="Debug" type="Node2D" parent="."]
+script = ExtResource("3_xqd3c")

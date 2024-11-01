@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://chfv8byxu66ev"]
+
+[ext_resource type="Script" path="res://intro.gd" id="1_tmgii"]
+
+[node name="Intro" type="Node2D"]
+script = ExtResource("1_tmgii")
+
+[node name="PlayButton" type="Button" parent="."]
+offset_left = 178.0
+offset_top = 347.0
+offset_right = 376.0
+offset_bottom = 497.0
+text = "Play"
+
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
