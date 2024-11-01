@@ -1,12 +1,8 @@
 extends Node2D
 
 # TODO
-# 1. Goal is dx-ball
-# 2. Configurable signals (on-hit, etc..)
-# 3. Five health points for bricks = five sprites
-# 4. Limit reflection angle by adjusting limit through property
-# 5. Acceleration on reflection, configurable
-# 6. Acceleration on input
+# 1. On-collision properties: angle limit, acceleration, node spawned, sound played.
+# Use @export_exp_easing where applicable.
 
 const Brick = preload("res://brick.gd")
 const RotatingBrick = preload("res://rotating_brick.gd")
