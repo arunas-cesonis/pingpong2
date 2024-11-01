@@ -3,6 +3,7 @@ extends Node2D
 # TODO
 # 1. On-collision properties: angle limit, acceleration, node spawned, sound played.
 # Use @export_exp_easing where applicable.
+# 2. Mouse controls
 
 const Brick = preload("res://brick.gd")
 const RotatingBrick = preload("res://rotating_brick.gd")
