@@ -13,6 +13,7 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 
 @onready var player: AnimatableBody2D = $Player
 @onready var ball: AnimatableBody2D = $Ball
+@onready var bricks: Node2D = $Bricks
 @onready var debug: Node2D = $Debug
 
 @export var initial_ball_direction := Vector2(0.0, 1.0)
@@ -22,7 +23,7 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 
 @onready var player_velocity = Vector2.ZERO
 
-@onready var score := 0.0
+var score := 0
 
 # To be used to add acceleration to ball
 @onready var player_velocity_avg = Vector2.ZERO
@@ -57,8 +58,8 @@ func _physics_process(delta: float) -> void:
 			normal = normal_offseted
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
-			if brick.apply_damage(51.0):
-				score += 1.0
+			if brick.apply_damage(101.0):
+				score += 1
 
 		$Debug.bounce.velocity_in = ball_direction * ball_speed
 		ball_direction = ball_direction.bounce(normal).normalized()
@@ -67,7 +68,7 @@ func _physics_process(delta: float) -> void:
 		$Debug.bounce.normal = normal
 		$Debug.queue_redraw()
 
-	if ball.position.y > player.position.y:
+	if ball.position.y > player.position.y or bricks.get_child_count() == 0:
 		get_tree().reload_current_scene()
 
 func _process(_delta: float) -> void:
@@ -80,3 +81,4 @@ func _process(_delta: float) -> void:
 	player_velocity_avg = (player_velocity_avg + player_velocity) * 0.05 * _delta
 	$Debug.update_value("player_velocity_avg", player_velocity_avg)
 	$Debug.update_value("score", score)
+	$Debug.update_value("bricks.get_child_count()", bricks.get_child_count())
