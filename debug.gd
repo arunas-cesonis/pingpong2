@@ -7,6 +7,8 @@ var bounce = {
 	velocity_out = Vector2(0.0, 0.0),
 	velocity_out_unlimited = Vector2(0.0, 0.0),
 	normal = Vector2(0.0, 0.0),
+	angle_min = 0.0,
+	angle_max = 0.0,
 }
 var values = {}
 const BOUNCE_SIZE := 100.0
@@ -44,12 +46,16 @@ func _draw_bounce(b: Dictionary) -> void:
 	var angle = b.normal.angle_to(b.velocity_out)
 	var angle_u = b.normal.angle_to(b.velocity_out_unlimited)
 
+	# draw_arc(p, BOUNCE_SIZE * 0.5, b.normal.angle() + b.angle_min, b.normal.angle() + b.angle_max, 20, Color(0.0, 1.0, 0.0, 0.5), 10.0)
+
 	draw_line(p - vin, p, Color.WHITE, 2.0)
 	draw_line(p, p + n, Color.RED, 2.0)
-	draw_line(p, p + vout, Color.WHITE, 2.0)
-	draw_dashed_line(p, p + voutu, Color.WHITE, 2.0, 4.0)
-	_draw_text("%.2f -> %.2f" % [rad_to_deg(angle_u), rad_to_deg(angle)], p + vout)
-
+	draw_line(p, p + voutu, Color.WHITE, 2.0)
+	draw_dashed_line(p, p + vout, Color.WHITE, 2.0, 5.0, false)
+	if angle_u != angle:
+		_draw_text("%.2f -> %.2f" % [rad_to_deg(angle_u), rad_to_deg(angle)], p + vout)
+	else:
+		_draw_text("%.2f" % [rad_to_deg(angle_u)], p + vout)
 
 func _draw():
 	# bounce

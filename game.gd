@@ -21,15 +21,18 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 
 @export_group("Ball collision")
 @export_category("Wall")
-@export var wall_angle_limit := 180.0
+@export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_min := 0.0
+@export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_max := 90.0
 @export var wall_acceleration := 0.0
 @export var wall_spawn_node: PackedScene = null
 @export_category("Player")
-@export var player_angle_limit := 180.0
+@export_range(0.0, 90.0, 0.001, "degrees") var player_angle_limit_min := 0.0
+@export_range(0.0, 90.0, 0.001, "degrees") var player_angle_limit_max := 90.0
 @export var player_acceleration := 0.0
 @export var player_spawn_node: PackedScene = null
 @export_category("Brick")
-@export var brick_angle_limit := 180.0
+@export_range(0.0, 90.0, 0.001, "degrees") var brick_angle_limit_min := 0.0
+@export_range(0.0, 90.0, 0.001, "degrees") var brick_angle_limit_max := 90.0
 @export var brick_acceleration := 0.0
 @export var brick_spawn_node: PackedScene = null
 
@@ -56,9 +59,9 @@ func _input(_event) -> void:
 func _ball_velocity() -> Vector2:
 	return ball_direction * ball_speed
 
-func _limit_bounce_angle(normal: Vector2, direction: Vector2, limit: float) -> Vector2:
+func _limit_bounce_angle(normal: Vector2, direction: Vector2, limit_min: float, limit_max: float) -> Vector2:
 	var angle = normal.angle_to(direction)
-	var new_angle = signf(angle) * minf(abs(angle), deg_to_rad(limit))
+	var new_angle = signf(angle) * clampf(absf(angle), limit_min, limit_max)
 	return Vector2.from_angle(normal.angle() + new_angle)
 
 func _physics_process(delta: float) -> void:
@@ -71,7 +74,8 @@ func _physics_process(delta: float) -> void:
 		false, safe_margin)
 	if collision:
 		var normal: Vector2 = collision.get_normal()
-		var bounce_angle_limit := 0.0
+		var bounce_angle_limit_min := 0.0
+		var bounce_angle_limit_max := 90.0
 		if collision.get_collider() == player:
 			var offset := player.position.x - collision.get_position().x
 			var shape: RectangleShape2D = player.get_child(0).shape
@@ -79,20 +83,33 @@ func _physics_process(delta: float) -> void:
 			var angle_adjustment := offset_normalized * reflect_amount
 			var normal_offseted := Vector2.from_angle(normal.angle() - angle_adjustment)
 			normal = normal_offseted
-			bounce_angle_limit = player_angle_limit
+			bounce_angle_limit_max = player_angle_limit_max
+			bounce_angle_limit_min = player_angle_limit_min
+			ball_speed = 1000.0
+
+			var tween := get_tree().create_tween()
+			tween.tween_property(self, "ball_speed", initial_ball_speed, 0.5)
+
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
 			if brick.apply_damage(101.0):
 				score += 1
-			bounce_angle_limit = brick_angle_limit
+			bounce_angle_limit_min = brick_angle_limit_min
+			bounce_angle_limit_max = brick_angle_limit_max
 		else:
-			bounce_angle_limit = wall_angle_limit
+			bounce_angle_limit_min = wall_angle_limit_min
+			bounce_angle_limit_max = wall_angle_limit_max
+
+		bounce_angle_limit_min = deg_to_rad(bounce_angle_limit_min)
+		bounce_angle_limit_max = deg_to_rad(bounce_angle_limit_max)
 
 		$Debug.bounce.velocity_in = _ball_velocity()
 		ball_direction = ball_direction.bounce(normal).normalized()
 		$Debug.bounce.velocity_out_unlimited = _ball_velocity()
-		ball_direction = _limit_bounce_angle(normal, ball_direction, bounce_angle_limit)
+		ball_direction = _limit_bounce_angle(normal, ball_direction, bounce_angle_limit_min, bounce_angle_limit_max)
 		$Debug.bounce.velocity_out = _ball_velocity()
+		$Debug.bounce.angle_min = bounce_angle_limit_min
+		$Debug.bounce.angle_max = bounce_angle_limit_max
 		$Debug.bounce.position = collision.get_position()
 		$Debug.bounce.normal = normal
 		$Debug.queue_redraw()
@@ -109,3 +126,4 @@ func _process(_delta: float) -> void:
 	player_velocity.x = direction * player_speed
 	$Debug.update_value("score", score)
 	$Debug.update_value("bricks.get_child_count()", bricks.get_child_count())
+	$Debug.update_value("ball_speed", ball_speed)
