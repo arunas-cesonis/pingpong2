@@ -16,7 +16,8 @@ radius = 25.0
 [node name="Game" type="Node2D"]
 script = ExtResource("1_jahp3")
 player_angle_limit_min = 15.0
-player_angle_limit_max = 15.0
+player_angle_limit_max = 20.692
+wall_angle_limit_min = 75.058
 metadata/_edit_vertical_guides_ = [-504.0]
 
 [node name="WallLeft" type="StaticBody2D" parent="."]

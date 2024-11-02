@@ -20,25 +20,21 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 @export var reflect_amount := 0.5
 
 @export_group("Ball collision")
-@export_category("Wall")
-@export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_min := 0.0
-@export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_max := 90.0
-@export var wall_acceleration := 0.0
-@export var wall_spawn_node: PackedScene = null
 @export_category("Player")
 @export_range(0.0, 90.0, 0.001, "degrees") var player_angle_limit_min := 0.0
 @export_range(0.0, 90.0, 0.001, "degrees") var player_angle_limit_max := 90.0
-@export var player_acceleration := 0.0
-@export var player_spawn_node: PackedScene = null
+@export var curve_demo: Curve = Curve.new()
+@export_category("Wall")
+@export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_min := 0.0
+@export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_max := 90.0
 @export_category("Brick")
 @export_range(0.0, 90.0, 0.001, "degrees") var brick_angle_limit_min := 0.0
 @export_range(0.0, 90.0, 0.001, "degrees") var brick_angle_limit_max := 90.0
-@export var brick_acceleration := 0.0
-@export var brick_spawn_node: PackedScene = null
 
 @onready var player_velocity = Vector2.ZERO
 
 var score := 0
+var ball_speed_tween: Tween = null
 
 @onready var ball_speed = initial_ball_speed
 @onready var ball_direction = initial_ball_direction
@@ -48,7 +44,6 @@ signal finished(score: int)
 func brick_remaining() -> int:
 	return bricks.get_child_count()
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
 
@@ -85,10 +80,17 @@ func _physics_process(delta: float) -> void:
 			normal = normal_offseted
 			bounce_angle_limit_max = player_angle_limit_max
 			bounce_angle_limit_min = player_angle_limit_min
-			ball_speed = 1000.0
 
+			if ball_speed_tween:
+				ball_speed_tween.kill()
+				ball_speed_tween = null
 			var tween := get_tree().create_tween()
-			tween.tween_property(self, "ball_speed", initial_ball_speed, 0.5)
+			ball_speed = 1000.0
+			tween.set_parallel(true)
+			var t = tween.tween_property(self, "ball_speed", initial_ball_speed, 3.0)
+			t.set_ease(Tween.EaseType.EASE_OUT)
+			t.set_trans(Tween.TransitionType.TRANS_QUAD)
+			ball_speed_tween = tween
 
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
