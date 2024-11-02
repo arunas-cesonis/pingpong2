@@ -86,7 +86,6 @@ func _physics_process(delta: float) -> void:
 				ball_speed_tween = null
 			var tween := get_tree().create_tween()
 			ball_speed = 1000.0
-			tween.set_parallel(true)
 			var t = tween.tween_property(self, "ball_speed", initial_ball_speed, 3.0)
 			t.set_ease(Tween.EaseType.EASE_OUT)
 			t.set_trans(Tween.TransitionType.TRANS_QUAD)
