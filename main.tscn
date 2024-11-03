@@ -2,5 +2,6 @@
 
 [ext_resource type="Script" path="res://main.gd" id="1_fuq0u"]
 
-[node name="Root" type="Node2D"]
+[node name="Main" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_fuq0u")

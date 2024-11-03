@@ -7,6 +7,9 @@ extends StaticBody2D
 enum Status {OK, DAMAGED, DEAD}
 var status: Status = Status.OK
 
+func _update_text() -> void:
+	health_label.text = str(health)
+
 func is_dead() -> bool:
 	return get_status() == Status.DEAD
 
@@ -22,7 +25,7 @@ func get_status() -> Status:
 func apply_damage(amount: float) -> bool:
 	var prev_status := self.get_status()
 	health -= amount
-	health_label.text = str(health)
+	_update_text()
 	if self.get_status() == Status.DEAD:
 		self.queue_free()
 		return prev_status != Status.DEAD
@@ -30,7 +33,7 @@ func apply_damage(amount: float) -> bool:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	_update_text()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

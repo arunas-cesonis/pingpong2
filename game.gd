@@ -4,8 +4,10 @@ extends Node2D
 # 1. Restrict reflection normal from player pad to Vector2.UP
 # 2. 3 states for bricks
 # 3. Spawn nodes on collision
-# 4. Mouse controls
-# 5. Sound
+# 4. Bricks spawn on timer and scroll down
+# 5. When ball is close to pad and Space is pressed, extra boost is applied. 3 seperate influence zones.
+# 6. Mouse controls
+# 7. Sound
 
 const Brick = preload("res://brick.gd")
 const RotatingBrick = preload("res://rotating_brick.gd")

@@ -20,6 +20,7 @@ size = Vector2(200, 20)
 radius = 25.0
 
 [node name="Game" type="Node2D"]
+process_mode = 1
 script = ExtResource("1_jahp3")
 ball_speed_player_collision = SubResource("Curve_50j4u")
 ball_speed_player_duration = 5.0

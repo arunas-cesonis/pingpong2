@@ -6,6 +6,10 @@ const Outro = preload("res://outro.tscn")
 
 var current_scene: Node = null
 
+func _input(_event) -> void:
+	if Input.is_action_just_pressed("Pause"):
+		get_tree().paused = not get_tree().paused
+
 func _set_current_scene(s: Node) -> void:
 	if current_scene:
 		current_scene.queue_free()
