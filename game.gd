@@ -3,7 +3,8 @@ extends Node2D
 # TODO
 # 1. On-collision properties: angle limit, acceleration, node spawned, sound played.
 # Use @export_exp_easing where applicable.
-# 2. Mouse controls
+# 2. Restrict reflection normal from player pad to Vector2.UP
+# 3. Mouse controls
 
 const Brick = preload("res://brick.gd")
 const RotatingBrick = preload("res://rotating_brick.gd")
@@ -15,15 +16,20 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 
 @export_group("Common")
 @export var initial_ball_direction := Vector2(0.0, 1.0)
-@export var initial_ball_speed := 500.0
 @export var player_speed := 500.0
 @export var reflect_amount := 0.5
+@export_category("Ball speed")
+@export var base_ball_speed := 500.0
+@export var ball_speed_player_collision: Curve = Curve.new()
+@export_range(0.0, 10.0, 0.001) var ball_speed_player_duration: float = 1.0
+@onready var ball_speed_player_time := ball_speed_player_duration
+
+# @export var curve_demo: Curve = Curve.new()
 
 @export_group("Ball collision")
 @export_category("Player")
 @export_range(0.0, 90.0, 0.001, "degrees") var player_angle_limit_min := 0.0
 @export_range(0.0, 90.0, 0.001, "degrees") var player_angle_limit_max := 90.0
-@export var curve_demo: Curve = Curve.new()
 @export_category("Wall")
 @export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_min := 0.0
 @export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_max := 90.0
@@ -34,9 +40,8 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 @onready var player_velocity = Vector2.ZERO
 
 var score := 0
-var ball_speed_tween: Tween = null
 
-@onready var ball_speed = initial_ball_speed
+@onready var ball_speed = base_ball_speed
 @onready var ball_direction = initial_ball_direction
 
 signal finished(score: int)
@@ -51,8 +56,14 @@ func _input(_event) -> void:
 	if Input.is_action_just_pressed("Reset"):
 		get_tree().reload_current_scene()
 
+func _ball_speed_player_curve() -> float:
+	return ball_speed_player_collision.sample(ball_speed_player_time / ball_speed_player_duration)
+
+func _ball_speed() -> float:
+	return base_ball_speed + _ball_speed_player_curve()
+
 func _ball_velocity() -> Vector2:
-	return ball_direction * ball_speed
+	return ball_direction * _ball_speed()
 
 func _limit_bounce_angle(normal: Vector2, direction: Vector2, limit_min: float, limit_max: float) -> Vector2:
 	var angle = normal.angle_to(direction)
@@ -61,6 +72,7 @@ func _limit_bounce_angle(normal: Vector2, direction: Vector2, limit_min: float, 
 
 func _physics_process(delta: float) -> void:
 	player.move_and_collide(player_velocity * delta)
+	ball_speed_player_time = minf(ball_speed_player_duration, ball_speed_player_time + delta)
 
 	# safe_margin = 1.0 here helps to unstuck the ball from rotating platforms
 	# and possibly player controlled platform
@@ -80,20 +92,11 @@ func _physics_process(delta: float) -> void:
 			normal = normal_offseted
 			bounce_angle_limit_max = player_angle_limit_max
 			bounce_angle_limit_min = player_angle_limit_min
-
-			if ball_speed_tween:
-				ball_speed_tween.kill()
-				ball_speed_tween = null
-			var tween := get_tree().create_tween()
-			ball_speed = 1000.0
-			var t = tween.tween_property(self, "ball_speed", initial_ball_speed, 3.0)
-			t.set_ease(Tween.EaseType.EASE_OUT)
-			t.set_trans(Tween.TransitionType.TRANS_QUAD)
-			ball_speed_tween = tween
+			ball_speed_player_time = 0.0
 
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
-			if brick.apply_damage(101.0):
+			if brick.apply_damage(51.0):
 				score += 1
 			bounce_angle_limit_min = brick_angle_limit_min
 			bounce_angle_limit_max = brick_angle_limit_max
@@ -127,4 +130,5 @@ func _process(_delta: float) -> void:
 	player_velocity.x = direction * player_speed
 	$Debug.update_value("score", score)
 	$Debug.update_value("bricks.get_child_count()", bricks.get_child_count())
-	$Debug.update_value("ball_speed", ball_speed)
+	$Debug.update_value("_ball_speed()", _ball_speed())
+	$Debug.update_value("_ball_speed_player_curve()", _ball_speed_player_curve())
