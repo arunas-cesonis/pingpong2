@@ -1,10 +1,11 @@
 extends Node2D
 
 # TODO
-# 1. On-collision properties: angle limit, acceleration, node spawned, sound played.
-# Use @export_exp_easing where applicable.
-# 2. Restrict reflection normal from player pad to Vector2.UP
-# 3. Mouse controls
+# 1. Restrict reflection normal from player pad to Vector2.UP
+# 2. 3 states for bricks
+# 3. Spawn nodes on collision
+# 4. Mouse controls
+# 5. Sound
 
 const Brick = preload("res://brick.gd")
 const RotatingBrick = preload("res://rotating_brick.gd")

@@ -23,8 +23,8 @@ radius = 25.0
 script = ExtResource("1_jahp3")
 ball_speed_player_collision = SubResource("Curve_50j4u")
 ball_speed_player_duration = 5.0
-player_angle_limit_min = 73.34
-player_angle_limit_max = 84.097
+player_angle_limit_min = 33.09
+player_angle_limit_max = 83.227
 wall_angle_limit_min = 70.541
 metadata/_edit_vertical_guides_ = [-504.0]
 
@@ -104,6 +104,7 @@ position = Vector2(213, 208)
 
 [node name="Brick14" parent="Bricks" instance=ExtResource("2_2dy8e")]
 position = Vector2(329, 211)
+initial_health = 500.0
 
 [node name="Debug" type="Node2D" parent="."]
 script = ExtResource("3_xqd3c")
