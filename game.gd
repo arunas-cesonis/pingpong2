@@ -87,6 +87,9 @@ func _physics_process(delta: float) -> void:
 		var bounce_angle_limit_min := 0.0
 		var bounce_angle_limit_max := 90.0
 		if collision.get_collider() == player:
+
+			normal = Vector2.UP
+
 			var offset := player.position.x - collision.get_position().x
 			var shape: RectangleShape2D = player.get_child(0).shape
 			var offset_normalized := offset / shape.size.x
