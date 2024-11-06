@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcgovrgwsr7io"]
+
+[ext_resource type="Script" path="res://demo_spawn_on_collision.gd" id="1_hd8k1"]
+
+[node name="DemoSpawnOnCollision" type="Node2D"]
+script = ExtResource("1_hd8k1")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+scale = Vector2(1.02387, 1.01799)
+emitting = false
+amount = 30
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 10)
+initial_velocity_max = 81.38
+scale_amount_min = 0.0
+scale_amount_max = 6.86
+
+[connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]

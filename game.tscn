@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=9 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_jahp3"]
 [ext_resource type="PackedScene" uid="uid://bd2vvxg46gdxp" path="res://brick.tscn" id="2_2dy8e"]
+[ext_resource type="PackedScene" uid="uid://dcgovrgwsr7io" path="res://demo_spawn_on_collision.tscn" id="2_g117g"]
 [ext_resource type="Script" path="res://debug.gd" id="3_xqd3c"]
 
 [sub_resource type="Curve" id="Curve_50j4u"]
@@ -22,6 +23,7 @@ radius = 25.0
 [node name="Game" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_jahp3")
+spawn_on_collision = ExtResource("2_g117g")
 ball_speed_player_collision = SubResource("Curve_50j4u")
 ball_speed_player_duration = 5.0
 player_angle_limit_min = 33.09
@@ -105,7 +107,6 @@ position = Vector2(213, 208)
 
 [node name="Brick14" parent="Bricks" instance=ExtResource("2_2dy8e")]
 position = Vector2(329, 211)
-initial_health = 500.0
 
 [node name="Debug" type="Node2D" parent="."]
 script = ExtResource("3_xqd3c")

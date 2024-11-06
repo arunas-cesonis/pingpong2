@@ -1,9 +1,9 @@
 extends Node2D
 
 # TODO
-# 1. Restrict reflection normal from player pad to Vector2.UP
-# 2. 3 states for bricks
-# 3. Spawn nodes on collision
+# 1. DONE. Restrict reflection normal from player pad to Vector2.UP
+# 2. ????. 3 states for bricks. Need to figured out how state is represented.
+# 3. DONE. Spawn nodes on collision
 # 4. Bricks spawn on timer and scroll down
 # 5. When ball is close to pad and Space is pressed, extra boost is applied. 3 seperate influence zones.
 # 6. Mouse controls
@@ -21,6 +21,7 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 @export var initial_ball_direction := Vector2(0.0, 1.0)
 @export var player_speed := 500.0
 @export var reflect_amount := 0.5
+@export var spawn_on_collision: PackedScene = null
 @export_category("Ball speed")
 @export var base_ball_speed := 500.0
 @export var ball_speed_player_collision: Curve = Curve.new()
@@ -101,13 +102,18 @@ func _physics_process(delta: float) -> void:
 
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
-			if brick.apply_damage(51.0):
+			if brick.apply_damage(1):
 				score += 1
 			bounce_angle_limit_min = brick_angle_limit_min
 			bounce_angle_limit_max = brick_angle_limit_max
 		else:
 			bounce_angle_limit_min = wall_angle_limit_min
 			bounce_angle_limit_max = wall_angle_limit_max
+
+		if spawn_on_collision:
+			var tmp: Node2D = spawn_on_collision.instantiate()
+			tmp.position = collision.get_position() 
+			add_child(tmp)
 
 		bounce_angle_limit_min = deg_to_rad(bounce_angle_limit_min)
 		bounce_angle_limit_max = deg_to_rad(bounce_angle_limit_max)
