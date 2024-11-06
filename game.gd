@@ -2,7 +2,8 @@ extends Node2D
 
 # TODO
 # 1. DONE. Restrict reflection normal from player pad to Vector2.UP
-# 2. ????. 3 states for bricks. Need to figured out how state is represented.
+# 2. ???? 3 states for bricks.
+# 	 ???? Need to figured out how state is represented.
 # 3. DONE. Spawn nodes on collision
 # 4. Bricks spawn on timer and scroll down
 # 5. When ball is close to pad and Space is pressed, extra boost is applied. 3 seperate influence zones.
@@ -27,8 +28,6 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 @export var ball_speed_player_collision: Curve = Curve.new()
 @export_range(0.0, 10.0, 0.001) var ball_speed_player_duration: float = 1.0
 @onready var ball_speed_player_time := ball_speed_player_duration
-
-# @export var curve_demo: Curve = Curve.new()
 
 @export_group("Ball collision")
 @export_category("Player")
