@@ -14,6 +14,10 @@ const Brick = preload("res://brick.gd")
 const BrickTscn = preload("res://brick.tscn")
 const RotatingBrick = preload("res://rotating_brick.gd")
 
+const CollisionSound = preload("res://collision.wav")
+const Collision2Sound = preload("res://collision2.wav")
+const DestroySound = preload("res://destroy.wav")
+
 @onready var player: AnimatableBody2D = $Player
 @onready var ball: AnimatableBody2D = $Ball
 @onready var debug: Node2D = $Debug
@@ -84,6 +88,9 @@ func _physics_process(delta: float) -> void:
 		var bounce_angle_limit_min := 0.0
 		var bounce_angle_limit_max := 90.0
 		if collision.get_collider() == player:
+			$AudioStreamPlayer2D.stop()
+			$AudioStreamPlayer2D.stream = CollisionSound
+			$AudioStreamPlayer2D.play()
 			# Disables corner or side reflections from pad by overriding the normal
 			normal = Vector2.UP
 			var offset := player.position.x - collision.get_position().x
@@ -98,15 +105,25 @@ func _physics_process(delta: float) -> void:
 
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
-			if brick.apply_damage(1):
+			if brick.apply_damage(2):
+				$AudioStreamPlayer2D.stop()
+				$AudioStreamPlayer2D.stream = DestroySound
+				$AudioStreamPlayer2D.play()
 				score += 1
-				var new_brick: Brick = BrickTscn.instantiate() 
-				new_brick.position = brick.position
-				new_brick.position.y -= 150.0
-				add_child(new_brick)
+				# var new_brick: Brick = BrickTscn.instantiate()
+				# new_brick.position = brick.position
+				# new_brick.position.y -= 150.0
+				# add_child(new_brick)
+			else:
+				$AudioStreamPlayer2D.stop()
+				$AudioStreamPlayer2D.stream = Collision2Sound
+				$AudioStreamPlayer2D.play()
 			bounce_angle_limit_min = brick_angle_limit_min
 			bounce_angle_limit_max = brick_angle_limit_max
 		else:
+			$AudioStreamPlayer2D.stop()
+			$AudioStreamPlayer2D.stream = CollisionSound
+			$AudioStreamPlayer2D.play()
 			bounce_angle_limit_min = wall_angle_limit_min
 			bounce_angle_limit_max = wall_angle_limit_max
 

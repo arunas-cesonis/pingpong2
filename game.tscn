@@ -68,3 +68,5 @@ shape = SubResource("CircleShape2D_wka3s")
 
 [node name="Debug" type="Node2D" parent="."]
 script = ExtResource("3_xqd3c")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
