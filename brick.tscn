@@ -1,49 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bd2vvxg46gdxp"]
+[gd_scene load_steps=3 format=3 uid="uid://bd2vvxg46gdxp"]
 
 [ext_resource type="Script" path="res://brick.gd" id="1_gwsqq"]
-[ext_resource type="Texture2D" uid="uid://b6a5vmo0jivk4" path="res://demo_brick.png" id="2_m8c4d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_br3nh"]
-size = Vector2(100, 30)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ywuyu"]
-atlas = ExtResource("2_m8c4d")
-region = Rect2(0, 0, 100, 30)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dlmvk"]
-atlas = ExtResource("2_m8c4d")
-region = Rect2(0, 30, 100, 30)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_h4yso"]
-atlas = ExtResource("2_m8c4d")
-region = Rect2(0, 60, 100, 30)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_cpm8p"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ywuyu")
-}],
-"loop": true,
-"name": &"0",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dlmvk")
-}],
-"loop": true,
-"name": &"1",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_h4yso")
-}],
-"loop": true,
-"name": &"2",
-"speed": 5.0
-}]
+size = Vector2(32, 32)
 
 [node name="Brick" type="AnimatableBody2D"]
 sync_to_physics = false
@@ -51,7 +11,3 @@ script = ExtResource("1_gwsqq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_br3nh")
-
-[node name="DemoBrick" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_cpm8p")
-animation = &"2"

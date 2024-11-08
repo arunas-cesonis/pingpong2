@@ -12,8 +12,7 @@ var gen: int = -1
 signal finished()
 
 func _update_health_visuals() -> void:
-	var name := str(health-1)
-	$DemoBrick.play(name)
+	pass
 
 func is_dead() -> bool:
 	return get_status() == Status.DEAD

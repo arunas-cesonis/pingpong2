@@ -3,7 +3,7 @@ extends Node2D
 const BrickTscn = preload("res://brick.tscn")
 const Brick = preload("res://brick.gd")
 
-var bricks_w := 4
+var bricks_w := 16 
 var bricks_h := 4
 
 # Called when the node enters the scene tree for the first time.
@@ -14,7 +14,7 @@ func _ready() -> void:
 			var brick: Brick = BrickTscn.instantiate()
 			if rect.size.is_zero_approx():
 				rect = brick.get_rect()
-			brick.position = rect.position * -1.0 + rect.size * Vector2(x, y)
+			brick.position = rect.position * -0.5 + rect.size * Vector2(x, y)
 			add_child(brick)
 	pass # Replace with function body.
 
