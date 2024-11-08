@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://ks1v6g6xn1p7"]
+
+[ext_resource type="Script" path="res://bricks.gd" id="1_c40bn"]
+[ext_resource type="PackedScene" uid="uid://bd2vvxg46gdxp" path="res://brick.tscn" id="2_kc2yl"]
+
+[node name="Bricks" type="Node2D"]
+script = ExtResource("1_c40bn")
+
+[node name="Brick" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(111, 70)
+
+[node name="Brick2" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(449, 73)
+
+[node name="Brick3" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(220, 69)
+
+[node name="Brick4" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(336, 72)
+
+[node name="Brick5" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(103, 114)
+
+[node name="Brick6" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(441, 117)
+
+[node name="Brick7" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(212, 113)
+
+[node name="Brick8" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(328, 116)
+
+[node name="Brick9" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(103, 158)
+
+[node name="Brick10" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(441, 161)
+
+[node name="Brick11" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(212, 157)
+
+[node name="Brick12" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(328, 160)
+
+[node name="Brick13" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(213, 208)
+
+[node name="Brick14" parent="." instance=ExtResource("2_kc2yl")]
+position = Vector2(329, 211)

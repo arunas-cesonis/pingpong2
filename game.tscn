@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_jahp3"]
-[ext_resource type="PackedScene" uid="uid://bd2vvxg46gdxp" path="res://brick.tscn" id="2_2dy8e"]
 [ext_resource type="PackedScene" uid="uid://dcgovrgwsr7io" path="res://demo_spawn_on_collision.tscn" id="2_g117g"]
+[ext_resource type="PackedScene" uid="uid://ks1v6g6xn1p7" path="res://bricks.tscn" id="3_8u3lx"]
 [ext_resource type="Script" path="res://debug.gd" id="3_xqd3c"]
 
 [sub_resource type="Curve" id="Curve_50j4u"]
@@ -25,7 +25,7 @@ process_mode = 1
 script = ExtResource("1_jahp3")
 spawn_on_collision = ExtResource("2_g117g")
 ball_speed_player_collision = SubResource("Curve_50j4u")
-ball_speed_player_duration = 5.0
+ball_speed_player_duration = 2.0
 player_angle_limit_min = 33.09
 player_angle_limit_max = 83.227
 wall_angle_limit_min = 70.541
@@ -64,49 +64,7 @@ sync_to_physics = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
 shape = SubResource("CircleShape2D_wka3s")
 
-[node name="Bricks" type="Node2D" parent="."]
-
-[node name="Brick" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(111, 70)
-
-[node name="Brick2" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(449, 73)
-
-[node name="Brick3" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(220, 69)
-
-[node name="Brick4" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(336, 72)
-
-[node name="Brick5" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(103, 114)
-
-[node name="Brick6" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(441, 117)
-
-[node name="Brick7" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(212, 113)
-
-[node name="Brick8" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(328, 116)
-
-[node name="Brick9" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(103, 158)
-
-[node name="Brick10" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(441, 161)
-
-[node name="Brick11" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(212, 157)
-
-[node name="Brick12" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(328, 160)
-
-[node name="Brick13" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(213, 208)
-
-[node name="Brick14" parent="Bricks" instance=ExtResource("2_2dy8e")]
-position = Vector2(329, 211)
+[node name="Bricks" parent="." instance=ExtResource("3_8u3lx")]
 
 [node name="Debug" type="Node2D" parent="."]
 script = ExtResource("3_xqd3c")

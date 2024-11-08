@@ -12,6 +12,9 @@ func _update_health_visuals() -> void:
 func is_dead() -> bool:
 	return get_status() == Status.DEAD
 
+func get_size() -> Vector2:
+	return $CollisionShape2D.shape.get_rect().size
+
 func get_status() -> Status:
 	if health < initial_health:
 		if health > 0:
@@ -32,6 +35,11 @@ func apply_damage(amount: int) -> bool:
 
 func _ready() -> void:
 	_update_health_visuals()
+	var t := get_tree().create_tween()
+	var tp := t.tween_property(self, "position", Vector2(0.0, get_size().y), 0.5)
+	tp.set_delay(1.0)
+	tp.as_relative()
+	t.set_loops()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

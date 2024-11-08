@@ -11,11 +11,12 @@ extends Node2D
 # 7. Sound
 
 const Brick = preload("res://brick.gd")
+const Bricks = preload("res://bricks.gd")
 const RotatingBrick = preload("res://rotating_brick.gd")
 
 @onready var player: AnimatableBody2D = $Player
 @onready var ball: AnimatableBody2D = $Ball
-@onready var bricks: Node2D = $Bricks
+@onready var bricks: Bricks = $Bricks
 @onready var debug: Node2D = $Debug
 
 @export_group("Common")
@@ -128,8 +129,11 @@ func _physics_process(delta: float) -> void:
 		$Debug.bounce.normal = normal
 		$Debug.queue_redraw()
 
-	if ball.position.y > player.position.y or bricks.get_child_count() == 0:
-		finished.emit(score)
+	if ball.position.y > player.position.y:
+		if finished.get_connections().is_empty():
+			get_tree().reload_current_scene()
+		else:
+			finished.emit(score)
 
 func _process(_delta: float) -> void:
 	var direction = 0.0

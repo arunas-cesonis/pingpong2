@@ -35,7 +35,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Brick" type="StaticBody2D"]
+[node name="Brick" type="AnimatableBody2D"]
+sync_to_physics = false
 script = ExtResource("1_gwsqq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -44,3 +45,9 @@ shape = SubResource("RectangleShape2D_br3nh")
 [node name="DemoBrick" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_cpm8p")
 frame_progress = 0.710039
+
+[node name="ScrollTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="ScrollTimer" to="." method="_on_scroll_timer_timeout"]
