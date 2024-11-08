@@ -11,12 +11,11 @@ extends Node2D
 # 7. Sound
 
 const Brick = preload("res://brick.gd")
-const Bricks = preload("res://bricks.gd")
+const BrickTscn = preload("res://brick.tscn")
 const RotatingBrick = preload("res://rotating_brick.gd")
 
 @onready var player: AnimatableBody2D = $Player
 @onready var ball: AnimatableBody2D = $Ball
-@onready var bricks: Bricks = $Bricks
 @onready var debug: Node2D = $Debug
 
 @export_group("Common")
@@ -44,14 +43,12 @@ const RotatingBrick = preload("res://rotating_brick.gd")
 @onready var player_velocity = Vector2.ZERO
 
 var score := 0
+var brick_progress := 0.0
 
 @onready var ball_speed = base_ball_speed
 @onready var ball_direction = initial_ball_direction
 
 signal finished(score: int)
-
-func brick_remaining() -> int:
-	return bricks.get_child_count()
 
 func _ready() -> void:
 	pass
@@ -81,8 +78,7 @@ func _physics_process(delta: float) -> void:
 	# safe_margin = 1.0 here helps to unstuck the ball from rotating platforms
 	# and possibly player controlled platform
 	var safe_margin := 1.0
-	var collision = ball.move_and_collide(_ball_velocity() * delta,
-		false, safe_margin)
+	var collision = ball.move_and_collide(_ball_velocity() * delta, false, safe_margin)
 	if collision:
 		var normal: Vector2 = collision.get_normal()
 		var bounce_angle_limit_min := 0.0
@@ -104,6 +100,10 @@ func _physics_process(delta: float) -> void:
 			var brick := collision.get_collider() as Brick
 			if brick.apply_damage(1):
 				score += 1
+				var new_brick: Brick = BrickTscn.instantiate() 
+				new_brick.position = brick.position
+				new_brick.position.y -= 150.0
+				add_child(new_brick)
 			bounce_angle_limit_min = brick_angle_limit_min
 			bounce_angle_limit_max = brick_angle_limit_max
 		else:
@@ -143,6 +143,6 @@ func _process(_delta: float) -> void:
 		direction = 1.0
 	player_velocity.x = direction * player_speed
 	$Debug.update_value("score", score)
-	$Debug.update_value("bricks.get_child_count()", bricks.get_child_count())
+	$Debug.update_value("$Bricks.get_child_count()", $Bricks.get_child_count())
 	$Debug.update_value("_ball_speed()", _ball_speed())
 	$Debug.update_value("_ball_speed_player_curve()", _ball_speed_player_curve())

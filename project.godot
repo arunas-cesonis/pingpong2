@@ -24,6 +24,10 @@ window/size/viewport_width=540
 window/size/viewport_height=960
 window/stretch/mode="viewport"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/utils/plugin.cfg")
+
 [input]
 
 MoveLeft={

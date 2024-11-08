@@ -23,15 +23,25 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ywuyu")
+}],
+"loop": true,
+"name": &"0",
+"speed": 5.0
 }, {
+"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dlmvk")
+}],
+"loop": true,
+"name": &"1",
+"speed": 5.0
 }, {
+"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_h4yso")
 }],
 "loop": true,
-"name": &"default",
+"name": &"2",
 "speed": 5.0
 }]
 
@@ -44,10 +54,4 @@ shape = SubResource("RectangleShape2D_br3nh")
 
 [node name="DemoBrick" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_cpm8p")
-frame_progress = 0.710039
-
-[node name="ScrollTimer" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
-
-[connection signal="timeout" from="ScrollTimer" to="." method="_on_scroll_timer_timeout"]
+animation = &"2"

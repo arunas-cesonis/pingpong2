@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://ks1v6g6xn1p7"]
 
-[ext_resource type="Script" path="res://bricks.gd" id="1_c40bn"]
+[ext_resource type="Script" path="res://bricks.gd" id="1_fj2te"]
 [ext_resource type="PackedScene" uid="uid://bd2vvxg46gdxp" path="res://brick.tscn" id="2_kc2yl"]
 
 [node name="Bricks" type="Node2D"]
-script = ExtResource("1_c40bn")
+script = ExtResource("1_fj2te")
 
 [node name="Brick" parent="." instance=ExtResource("2_kc2yl")]
 position = Vector2(111, 70)
