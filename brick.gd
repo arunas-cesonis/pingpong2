@@ -9,10 +9,14 @@ enum Status {OK, DAMAGED, DEAD}
 var status: Status = Status.OK
 var gen: int = -1
 
+var UNHEALTHY: Color = Color.hex(0xc8d627ff)
+var HEALTHY: Color = Color.WHITE
+
 signal finished()
 
 func _update_health_visuals() -> void:
-	pass
+	var mod := UNHEALTHY.lerp(HEALTHY, float(health) / initial_health)
+	$Sprite2D.modulate = mod
 
 func is_dead() -> bool:
 	return get_status() == Status.DEAD
