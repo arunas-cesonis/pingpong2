@@ -34,10 +34,10 @@ func _scroll_interval() -> void:
 	for child in get_children():
 		var brick: Brick = child
 		brick.create_tween().tween_property(brick, "position", scroll_amount, SCROLL_TIME).as_relative()
-	await get_tree().create_timer(SCROLL_TIME, false).timeout
+	await get_tree().create_timer(SCROLL_TIME, false, true).timeout
 	var time_per_brick := SCROLL_SPAWN_TIME / bricks_w
 	for x in range(bricks_w):
-		await get_tree().create_timer(time_per_brick, false).timeout
+		await get_tree().create_timer(time_per_brick, false, true).timeout
 		add_child(_create_brick(x, 0))
 
 func _ready() -> void:

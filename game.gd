@@ -4,7 +4,7 @@ extends Node2D
 # 1. DONE. Restrict reflection normal from player pad to Vector2.UP
 # 2. DONE. 3 states for bricks.
 # 3. DONE. Spawn nodes on collision
-# 4. Bricks spawn on timer and scroll down. Generated grid, scrolls down.
+# 4. DONE. Bricks spawn on timer and scroll down. Generated grid, scrolls down.
 # 5. When ball is close to pad and Space is pressed, extra boost is applied. 3 seperate influence zones.
 # 6. Mouse controls
 # 7. Bricks that do not touch should fall down.

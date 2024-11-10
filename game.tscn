@@ -9,8 +9,8 @@
 [sub_resource type="Curve" id="Curve_50j4u"]
 min_value = -500.0
 max_value = 500.0
-_data = [Vector2(0, 500), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 500), 0.0, 0.0, 0, 0, Vector2(0.239521, 191.162), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_snhc6"]
 size = Vector2(20, 960)

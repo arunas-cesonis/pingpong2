@@ -12,8 +12,6 @@ var gen: int = -1
 var UNHEALTHY: Color = Color.hex(0xc8d627ff)
 var HEALTHY: Color = Color.WHITE
 
-signal finished()
-
 func _update_health_visuals() -> void:
 	var mod := UNHEALTHY.lerp(HEALTHY, float(health) / initial_health)
 	$Sprite2D.modulate = mod
@@ -40,7 +38,6 @@ func apply_damage(amount: int) -> bool:
 	health -= amount
 	_update_health_visuals()
 	if self.get_status() == Status.DEAD and prev_status != Status.DEAD:
-		self.finished.emit()
 		self.queue_free()
 		return true
 	return false
