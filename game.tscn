@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=10 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_jahp3"]
 [ext_resource type="PackedScene" uid="uid://dcgovrgwsr7io" path="res://demo_spawn_on_collision.tscn" id="2_g117g"]
 [ext_resource type="PackedScene" uid="uid://ks1v6g6xn1p7" path="res://bricks.tscn" id="3_8u3lx"]
+[ext_resource type="Texture2D" uid="uid://bhbvodns08cne" path="res://graphics1.png" id="3_hoi0h"]
 [ext_resource type="Script" path="res://debug.gd" id="3_xqd3c"]
 
 [sub_resource type="Curve" id="Curve_50j4u"]
@@ -15,10 +16,10 @@ point_count = 2
 size = Vector2(20, 960)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2yc25"]
-size = Vector2(200, 20)
+size = Vector2(160, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wka3s"]
-radius = 25.0
+radius = 32.0
 
 [node name="Game" type="Node2D"]
 process_mode = 1
@@ -51,17 +52,75 @@ rotation = 1.5708
 shape = SubResource("RectangleShape2D_snhc6")
 
 [node name="Player" type="AnimatableBody2D" parent="."]
-position = Vector2(270, 960)
+position = Vector2(270, 944)
 sync_to_physics = false
 
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture_filter = 1
+scale = Vector2(4, 4)
+texture = ExtResource("3_hoi0h")
+hframes = 4
+vframes = 4
+frame = 6
+region_rect = Rect2(16, 100, 100, 100)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Player"]
+texture_filter = 1
+position = Vector2(32, 0)
+scale = Vector2(4, 4)
+texture = ExtResource("3_hoi0h")
+hframes = 4
+vframes = 4
+frame = 6
+region_rect = Rect2(16, 100, 100, 100)
+
+[node name="Sprite2D3" type="Sprite2D" parent="Player"]
+texture_filter = 1
+position = Vector2(64, 0)
+scale = Vector2(4, 4)
+texture = ExtResource("3_hoi0h")
+hframes = 4
+vframes = 4
+frame = 6
+region_rect = Rect2(16, 100, 100, 100)
+
+[node name="Sprite2D4" type="Sprite2D" parent="Player"]
+texture_filter = 1
+position = Vector2(-32, 0)
+scale = Vector2(4, 4)
+texture = ExtResource("3_hoi0h")
+hframes = 4
+vframes = 4
+frame = 6
+region_rect = Rect2(16, 100, 100, 100)
+
+[node name="Sprite2D5" type="Sprite2D" parent="Player"]
+texture_filter = 1
+position = Vector2(-64, 0)
+scale = Vector2(4, 4)
+texture = ExtResource("3_hoi0h")
+hframes = 4
+vframes = 4
+frame = 6
+region_rect = Rect2(16, 100, 100, 100)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+visible = false
 shape = SubResource("RectangleShape2D_2yc25")
 
 [node name="Ball" type="AnimatableBody2D" parent="."]
 position = Vector2(270, 480)
 sync_to_physics = false
 
+[node name="Sprite2D" type="Sprite2D" parent="Ball"]
+texture_filter = 1
+scale = Vector2(4, 4)
+texture = ExtResource("3_hoi0h")
+hframes = 2
+vframes = 2
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+visible = false
 shape = SubResource("CircleShape2D_wka3s")
 
 [node name="Bricks" parent="." instance=ExtResource("3_8u3lx")]

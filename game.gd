@@ -19,6 +19,7 @@ const Collision2Sound = preload("res://collision2.wav")
 const DestroySound = preload("res://destroy.wav")
 
 @onready var player: AnimatableBody2D = $Player
+@onready var player_collision_shape: CollisionShape2D = player.find_child("CollisionShape2D", false)
 @onready var ball: AnimatableBody2D = $Ball
 @onready var debug: Node2D = $Debug
 
@@ -94,7 +95,7 @@ func _physics_process(delta: float) -> void:
 			# Disables corner or side reflections from pad by overriding the normal
 			normal = Vector2.UP
 			var offset := player.position.x - collision.get_position().x
-			var shape: RectangleShape2D = player.get_child(0).shape
+			var shape: RectangleShape2D = player_collision_shape.shape
 			var offset_normalized := offset / shape.size.x
 			var angle_adjustment := offset_normalized * reflect_amount
 			var normal_offseted := Vector2.from_angle(normal.angle() - angle_adjustment)
