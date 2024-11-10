@@ -76,12 +76,17 @@ func _limit_bounce_angle(normal: Vector2, direction: Vector2, limit_min: float, 
 	var new_angle = signf(angle) * clampf(absf(angle), limit_min, limit_max)
 	return Vector2.from_angle(normal.angle() + new_angle)
 
+func _play_sound(sound: Resource) -> void:
+	$AudioStreamPlayer2D.stop()
+	$AudioStreamPlayer2D.stream = sound
+	$AudioStreamPlayer2D.play()
+
 func _physics_process(delta: float) -> void:
 	player.move_and_collide(player_velocity * delta)
 	ball_speed_player_time = minf(ball_speed_player_duration, ball_speed_player_time + delta)
 
 	# safe_margin = 1.0 here helps to unstuck the ball from rotating platforms
-	# and possibly player controlled platform
+	# and player controlled platform
 	var safe_margin := 1.0
 	var collision = ball.move_and_collide(_ball_velocity() * delta, false, safe_margin)
 	if collision:
@@ -89,11 +94,13 @@ func _physics_process(delta: float) -> void:
 		var bounce_angle_limit_min := 0.0
 		var bounce_angle_limit_max := 90.0
 		if collision.get_collider() == player:
-			$AudioStreamPlayer2D.stop()
-			$AudioStreamPlayer2D.stream = CollisionSound
-			$AudioStreamPlayer2D.play()
+			_play_sound(CollisionSound)
+			
+			ball.position.y = minf(player.position.y - 48.0, ball.position.y)
+
 			# Disables corner or side reflections from pad by overriding the normal
 			normal = Vector2.UP
+
 			var offset := player.position.x - collision.get_position().x
 			var shape: RectangleShape2D = player_collision_shape.shape
 			var offset_normalized := offset / shape.size.x
@@ -107,24 +114,18 @@ func _physics_process(delta: float) -> void:
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
 			if brick.apply_damage(2):
-				$AudioStreamPlayer2D.stop()
-				$AudioStreamPlayer2D.stream = DestroySound
-				$AudioStreamPlayer2D.play()
+				_play_sound(DestroySound)
 				score += 1
 				# var new_brick: Brick = BrickTscn.instantiate()
 				# new_brick.position = brick.position
 				# new_brick.position.y -= 150.0
 				# add_child(new_brick)
 			else:
-				$AudioStreamPlayer2D.stop()
-				$AudioStreamPlayer2D.stream = Collision2Sound
-				$AudioStreamPlayer2D.play()
+				_play_sound(Collision2Sound)
 			bounce_angle_limit_min = brick_angle_limit_min
 			bounce_angle_limit_max = brick_angle_limit_max
 		else:
-			$AudioStreamPlayer2D.stop()
-			$AudioStreamPlayer2D.stream = CollisionSound
-			$AudioStreamPlayer2D.play()
+			_play_sound(CollisionSound)
 			bounce_angle_limit_min = wall_angle_limit_min
 			bounce_angle_limit_max = wall_angle_limit_max
 
