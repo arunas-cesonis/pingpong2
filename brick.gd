@@ -17,6 +17,8 @@ signal finished()
 func _update_health_visuals() -> void:
 	var mod := UNHEALTHY.lerp(HEALTHY, float(health) / initial_health)
 	$Sprite2D.modulate = mod
+	if health < initial_health:
+		$Sprite2D.frame = 10
 
 func is_dead() -> bool:
 	return get_status() == Status.DEAD
