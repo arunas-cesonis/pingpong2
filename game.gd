@@ -14,9 +14,9 @@ const Brick = preload("res://brick.gd")
 const BrickTscn = preload("res://brick.tscn")
 const RotatingBrick = preload("res://rotating_brick.gd")
 
-const CollisionSound = preload("res://collision.wav")
-const Collision2Sound = preload("res://collision2.wav")
-const DestroySound = preload("res://destroy.wav")
+const CollisionSound = preload("res://sounds/collision.wav")
+const Collision2Sound = preload("res://sounds/collision2.wav")
+const DestroySound = preload("res://sounds/destroy.wav")
 
 @onready var player: AnimatableBody2D = $Player
 @onready var player_collision_shape: CollisionShape2D = player.find_child("CollisionShape2D", false)
