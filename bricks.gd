@@ -37,6 +37,9 @@ func _scroll_interval() -> void:
 	await get_tree().create_timer(SCROLL_TIME, false, true).timeout
 	var time_per_brick := SCROLL_SPAWN_TIME / bricks_w
 	for x in range(bricks_w):
+		# Exit in case this node is no longer attached (i.e. a game has ended)
+		if not is_inside_tree():
+			break
 		await get_tree().create_timer(time_per_brick, false, true).timeout
 		add_child(_create_brick(x, 0))
 

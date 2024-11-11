@@ -5,7 +5,7 @@ extends Node2D
 # 2. DONE. 3 states for bricks.
 # 3. DONE. Spawn nodes on collision
 # 4. DONE. Bricks spawn on timer and scroll down. Generated grid, scrolls down.
-# 5. When ball is close to pad and Space is pressed, extra boost is applied. 3 seperate influence zones.
+# 5. DONE. When ball is close to pad and F is pressed, extra boost is applied. 3 seperate influence zones.
 # 6. Mouse controls
 # 7. Bricks that do not touch should fall down.
 # 8. Sound
@@ -24,12 +24,23 @@ const DestroySound = preload("res://sounds/destroy.wav")
 @onready var debug: Node2D = $Debug
 
 @export_group("Common")
+
+@export_range(0.0, 200.0) var influence_min_distance := 20.0
+@export_range(0.0, 200.0) var influence_max_distance := 200.0
+@export var influence_curve: Curve = Curve.new()
+@export_range(0.0, 10.0, 0.001) var influence_duration: float = 1.0
+@onready var influence_time := influence_duration
+
+enum InfluenceState {TOO_FAR, USED, AVAILABLE}
+var influence_state: InfluenceState = InfluenceState.TOO_FAR
+
 @export var initial_ball_direction := Vector2(0.0, 1.0)
 @export var player_speed := 500.0
 @export var reflect_amount := 0.5
 @export var spawn_on_collision: PackedScene = null
 @export_category("Ball speed")
 @export var base_ball_speed := 500.0
+
 @export var ball_speed_player_collision: Curve = Curve.new()
 @export_range(0.0, 10.0, 0.001) var ball_speed_player_duration: float = 1.0
 @onready var ball_speed_player_time := ball_speed_player_duration
@@ -65,8 +76,11 @@ func _input(_event) -> void:
 func _ball_speed_player_curve() -> float:
 	return ball_speed_player_collision.sample(ball_speed_player_time / ball_speed_player_duration)
 
+func _influence_curve() -> float:
+	return influence_curve.sample(influence_time / influence_duration)
+
 func _ball_speed() -> float:
-	return base_ball_speed + _ball_speed_player_curve()
+	return base_ball_speed + _ball_speed_player_curve() + _influence_curve()
 
 func _ball_velocity() -> Vector2:
 	return ball_direction * _ball_speed()
@@ -81,9 +95,35 @@ func _play_sound(sound: Resource) -> void:
 	$AudioStreamPlayer2D.stream = sound
 	$AudioStreamPlayer2D.play()
 
+func _calc_influence() -> void:
+	var distance := absf(player.position.y - ball.position.y)
+	var inside := distance >= influence_min_distance and distance <= influence_max_distance
+	if influence_state == InfluenceState.TOO_FAR:
+		if inside:
+			influence_state = InfluenceState.AVAILABLE
+	elif influence_state == InfluenceState.AVAILABLE:
+		if not inside:
+			influence_state = InfluenceState.TOO_FAR
+		else:
+			if Input.is_action_just_pressed("Boost"):
+				influence_state = InfluenceState.USED
+				var amount := (distance - influence_min_distance) / (influence_max_distance - influence_min_distance)
+				$Debug.values.last_boost = "%.2f%%" % (100.0 - (amount * 100.0))
+				influence_time = amount * influence_duration
+	
+	elif influence_state == InfluenceState.USED:
+		if not inside:
+			influence_state = InfluenceState.TOO_FAR
+
+	$Debug.influence.player = player.position
+	$Debug.influence.ball = ball.position
+	$Debug.influence.min_distance = influence_min_distance
+	$Debug.influence.max_distance = influence_max_distance
+
 func _physics_process(delta: float) -> void:
 	player.move_and_collide(player_velocity * delta)
 	ball_speed_player_time = minf(ball_speed_player_duration, ball_speed_player_time + delta)
+	influence_time = minf(influence_duration, influence_time + delta)
 
 	# safe_margin = 1.0 here helps to unstuck the ball from rotating platforms
 	# and player controlled platform
@@ -148,6 +188,8 @@ func _physics_process(delta: float) -> void:
 		$Debug.bounce.normal = normal
 		$Debug.queue_redraw()
 
+	_calc_influence()
+
 	if ball.position.y > player.position.y:
 		if finished.get_connections().is_empty():
 			get_tree().reload_current_scene()
@@ -165,3 +207,4 @@ func _process(_delta: float) -> void:
 	$Debug.update_value("$Bricks.get_child_count()", $Bricks.get_child_count())
 	$Debug.update_value("_ball_speed()", _ball_speed())
 	$Debug.update_value("_ball_speed_player_curve()", _ball_speed_player_curve())
+	$Debug.update_value("_influence_curve()", _influence_curve())

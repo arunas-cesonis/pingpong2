@@ -1,10 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=11 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_jahp3"]
 [ext_resource type="PackedScene" uid="uid://dcgovrgwsr7io" path="res://demo_spawn_on_collision.tscn" id="2_g117g"]
 [ext_resource type="PackedScene" uid="uid://ks1v6g6xn1p7" path="res://bricks.tscn" id="3_8u3lx"]
 [ext_resource type="Texture2D" uid="uid://bhbvodns08cne" path="res://graphics1.png" id="3_hoi0h"]
 [ext_resource type="Script" path="res://debug.gd" id="3_xqd3c"]
+
+[sub_resource type="Curve" id="Curve_ctkgm"]
+max_value = 1000.0
+_data = [Vector2(0, 1000), 0.0, 0.0, 0, 0, Vector2(0.993835, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Curve" id="Curve_50j4u"]
 min_value = -500.0
@@ -24,6 +29,8 @@ radius = 32.0
 [node name="Game" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_jahp3")
+influence_min_distance = 30.0
+influence_curve = SubResource("Curve_ctkgm")
 spawn_on_collision = ExtResource("2_g117g")
 ball_speed_player_collision = SubResource("Curve_50j4u")
 ball_speed_player_duration = 2.0
