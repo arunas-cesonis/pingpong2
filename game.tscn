@@ -1,11 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=13 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_jahp3"]
 [ext_resource type="PackedScene" uid="uid://dcgovrgwsr7io" path="res://demo_spawn_on_collision.tscn" id="2_g117g"]
 [ext_resource type="PackedScene" uid="uid://ks1v6g6xn1p7" path="res://bricks.tscn" id="3_8u3lx"]
 [ext_resource type="Texture2D" uid="uid://bhbvodns08cne" path="res://graphics1.png" id="3_hoi0h"]
 [ext_resource type="Script" path="res://debug.gd" id="3_xqd3c"]
-[ext_resource type="PackedScene" uid="uid://cvejtj801xbyt" path="res://polygon_2d.tscn" id="6_nxyrl"]
+[ext_resource type="PackedScene" uid="uid://c474ktnlls203" path="res://node_2d.tscn" id="6_m0oa1"]
+[ext_resource type="Script" path="res://node_2d.gd" id="7_uxct2"]
 
 [sub_resource type="Curve" id="Curve_ctkgm"]
 max_value = 1000.0
@@ -137,4 +138,5 @@ script = ExtResource("3_xqd3c")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 
-[node name="Polygon2D" parent="." instance=ExtResource("6_nxyrl")]
+[node name="Node2D" parent="." instance=ExtResource("6_m0oa1")]
+script = ExtResource("7_uxct2")
