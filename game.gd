@@ -6,9 +6,10 @@ extends Node2D
 # 3. DONE. Spawn nodes on collision
 # 4. DONE. Bricks spawn on timer and scroll down. Generated grid, scrolls down.
 # 5. DONE. When ball is close to pad and F is pressed, extra boost is applied. 3 seperate influence zones.
-# 6. Mouse controls
-# 7. Bricks that do not touch should fall down.
-# 8. Sound
+# 6. Make player reflection angle like in DX-BALL
+# 7. Mouse controls
+# 8. Bricks that do not touch should fall down.
+# 9. Sound
 
 const Brick = preload("res://brick.gd")
 const BrickTscn = preload("res://brick.tscn")
@@ -19,7 +20,7 @@ const Collision2Sound = preload("res://sounds/collision2.wav")
 const DestroySound = preload("res://sounds/destroy.wav")
 
 @onready var player: AnimatableBody2D = $Player
-@onready var player_collision_shape: CollisionShape2D = player.find_child("CollisionShape2D", false)
+@onready var player_collision_shape: RectangleShape2D = player.find_child("CollisionShape2D", false).shape
 @onready var ball: AnimatableBody2D = $Ball
 @onready var debug: Node2D = $Debug
 
@@ -36,7 +37,7 @@ var influence_state: InfluenceState = InfluenceState.TOO_FAR
 
 @export var initial_ball_direction := Vector2(0.0, 1.0)
 @export var player_speed := 500.0
-@export var reflect_amount := 0.5
+@export var reflect_amount := 1.0
 @export var spawn_on_collision: PackedScene = null
 @export_category("Ball speed")
 @export var base_ball_speed := 500.0
@@ -46,9 +47,6 @@ var influence_state: InfluenceState = InfluenceState.TOO_FAR
 @onready var ball_speed_player_time := ball_speed_player_duration
 
 @export_group("Ball collision")
-@export_category("Player")
-@export_range(0.0, 90.0, 0.001, "degrees") var player_angle_limit_min := 0.0
-@export_range(0.0, 90.0, 0.001, "degrees") var player_angle_limit_max := 90.0
 @export_category("Wall")
 @export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_min := 0.0
 @export_range(0.0, 90.0, 0.001, "degrees") var wall_angle_limit_max := 90.0
@@ -133,27 +131,24 @@ func _physics_process(delta: float) -> void:
 		var normal: Vector2 = collision.get_normal()
 		var bounce_angle_limit_min := 0.0
 		var bounce_angle_limit_max := 90.0
+
 		if collision.get_collider() == player:
 			_play_sound(CollisionSound)
-			
+
 			ball.position.y = minf(player.position.y - 48.0, ball.position.y)
 
 			# Disables corner or side reflections from pad by overriding the normal
-			normal = Vector2.UP
-
 			var offset := player.position.x - collision.get_position().x
-			var shape: RectangleShape2D = player_collision_shape.shape
-			var offset_normalized := offset / shape.size.x
-			var angle_adjustment := offset_normalized * reflect_amount
-			var normal_offseted := Vector2.from_angle(normal.angle() - angle_adjustment)
-			normal = normal_offseted
-			bounce_angle_limit_max = player_angle_limit_max
-			bounce_angle_limit_min = player_angle_limit_min
+
+			var offset_normalized := offset / player_collision_shape.size.x
+			var angle = reflect_amount * -offset_normalized
 			ball_speed_player_time = 0.0
+
+			ball_direction = Vector2.UP.rotated(angle)
 
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
-			if brick.apply_damage(2):
+			if brick.apply_damage(1):
 				_play_sound(DestroySound)
 				score += 1
 				# var new_brick: Brick = BrickTscn.instantiate()
@@ -162,12 +157,16 @@ func _physics_process(delta: float) -> void:
 				# add_child(new_brick)
 			else:
 				_play_sound(Collision2Sound)
-			bounce_angle_limit_min = brick_angle_limit_min
-			bounce_angle_limit_max = brick_angle_limit_max
+			var amin := deg_to_rad(brick_angle_limit_min)
+			var amax := deg_to_rad(brick_angle_limit_max)
+			ball_direction = ball_direction.bounce(normal).normalized()
+			ball_direction = _limit_bounce_angle(normal, ball_direction, amin, amax)
 		else:
 			_play_sound(CollisionSound)
-			bounce_angle_limit_min = wall_angle_limit_min
-			bounce_angle_limit_max = wall_angle_limit_max
+			var amin := deg_to_rad(wall_angle_limit_min)
+			var amax := deg_to_rad(wall_angle_limit_max)
+			ball_direction = ball_direction.bounce(normal).normalized()
+			ball_direction = _limit_bounce_angle(normal, ball_direction, amin, amax)
 
 		if spawn_on_collision:
 			var tmp: Node2D = spawn_on_collision.instantiate()
@@ -177,16 +176,17 @@ func _physics_process(delta: float) -> void:
 		bounce_angle_limit_min = deg_to_rad(bounce_angle_limit_min)
 		bounce_angle_limit_max = deg_to_rad(bounce_angle_limit_max)
 
-		$Debug.bounce.velocity_in = _ball_velocity()
-		ball_direction = ball_direction.bounce(normal).normalized()
-		$Debug.bounce.velocity_out_unlimited = _ball_velocity()
-		ball_direction = _limit_bounce_angle(normal, ball_direction, bounce_angle_limit_min, bounce_angle_limit_max)
-		$Debug.bounce.velocity_out = _ball_velocity()
-		$Debug.bounce.angle_min = bounce_angle_limit_min
-		$Debug.bounce.angle_max = bounce_angle_limit_max
-		$Debug.bounce.position = collision.get_position()
-		$Debug.bounce.normal = normal
-		$Debug.queue_redraw()
+
+		# $Debug.bounce.velocity_in = _ball_velocity()
+
+		# $Debug.bounce.velocity_out_unlimited = _ball_velocity()
+
+		# $Debug.bounce.velocity_out = _ball_velocity()
+		# $Debug.bounce.angle_min = bounce_angle_limit_min
+		# $Debug.bounce.angle_max = bounce_angle_limit_max
+		# $Debug.bounce.position = collision.get_position()
+		# $Debug.bounce.normal = normal
+		# $Debug.queue_redraw()
 
 	_calc_influence()
 

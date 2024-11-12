@@ -18,6 +18,7 @@ func _create_brick(x: int, y: int) -> Brick:
 	var bricks_width := bricks_w * brick_rect.size.x
 	var center := Vector2(get_viewport_rect().size.x * 0.5 - bricks_width * 0.5, top_offset)
 	var brick: Brick = BrickTscn.instantiate()
+	brick.initial_health = 1;
 	brick.position = brick_rect.size * Vector2(x, y) - brick_rect.position + center
 	return brick
 
