@@ -137,9 +137,7 @@ func _physics_process(delta: float) -> void:
 
 			ball.position.y = minf(player.position.y - 48.0, ball.position.y)
 
-			# Disables corner or side reflections from pad by overriding the normal
 			var offset := player.position.x - collision.get_position().x
-
 			var offset_normalized := offset / player_collision_shape.size.x
 			var angle = reflect_amount * -offset_normalized
 			ball_speed_player_time = 0.0
@@ -151,10 +149,6 @@ func _physics_process(delta: float) -> void:
 			if brick.apply_damage(1):
 				_play_sound(DestroySound)
 				score += 1
-				# var new_brick: Brick = BrickTscn.instantiate()
-				# new_brick.position = brick.position
-				# new_brick.position.y -= 150.0
-				# add_child(new_brick)
 			else:
 				_play_sound(Collision2Sound)
 			var amin := deg_to_rad(brick_angle_limit_min)
@@ -175,18 +169,6 @@ func _physics_process(delta: float) -> void:
 
 		bounce_angle_limit_min = deg_to_rad(bounce_angle_limit_min)
 		bounce_angle_limit_max = deg_to_rad(bounce_angle_limit_max)
-
-
-		# $Debug.bounce.velocity_in = _ball_velocity()
-
-		# $Debug.bounce.velocity_out_unlimited = _ball_velocity()
-
-		# $Debug.bounce.velocity_out = _ball_velocity()
-		# $Debug.bounce.angle_min = bounce_angle_limit_min
-		# $Debug.bounce.angle_max = bounce_angle_limit_max
-		# $Debug.bounce.position = collision.get_position()
-		# $Debug.bounce.normal = normal
-		# $Debug.queue_redraw()
 
 	_calc_influence()
 
