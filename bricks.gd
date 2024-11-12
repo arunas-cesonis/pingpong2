@@ -2,17 +2,22 @@ extends Node2D
 
 const BrickTscn = preload("res://brick.tscn")
 const Brick = preload("res://brick.gd")
+const GenTexture = preload("res://gen_texture.png") 
 
 var bricks_w := 16
-var bricks_h := 10
+var bricks_h := 16
 var top_offset := 16
 var brick_rect := Rect2()
+var image := GenTexture.get_image()
 
 const SCROLL_TIME := 0.2
 const SCROLL_SPAWN_TIME := 1.0
 const SCROLL_WAIT := 2.0
 
 var scroll_amount := Vector2.ZERO
+
+func _init() -> void:
+	image.resize(bricks_w, bricks_h, Image.INTERPOLATE_NEAREST)
 
 func _create_brick(x: int, y: int) -> Brick:
 	var bricks_width := bricks_w * brick_rect.size.x
@@ -29,7 +34,9 @@ func _create_bricks() -> void:
 	scroll_amount = Vector2(0.0, brick_rect.size.y)
 	for y in range(bricks_h):
 		for x in range(bricks_w):
-			add_child(_create_brick(x, y))
+			var pixel := image.get_pixel(x, y)
+			if pixel != Color.BLACK:
+				add_child(_create_brick(x, y))
 
 func _scroll_interval() -> void:
 	for child in get_children():
