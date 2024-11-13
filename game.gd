@@ -10,7 +10,11 @@ extends Node2D
 # More gaps to extend the game.
 # Slow down scrolling.
 # Bricks that do not touch should fall down.
-# Instead of catching items, buy them for score.
+# Buy power ups for score.
+## Power up how many bricks a ball can go through.
+## Power up splash damage.
+## Power up buy multiple balls.
+## Power up critical boost other power ups.
 # Sound
 
 const Brick = preload("res://brick.gd")
