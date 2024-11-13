@@ -1,6 +1,7 @@
 shader_type canvas_item;
 
-uniform float offset;
+uniform vec2 offset;
+uniform vec2 scale;
 
 void vertex() {
 	// Called for every vertex the material is visible on.
@@ -42,7 +43,7 @@ vec2 voronoiNoise(vec2 value){
 }
 
 void fragment() {
-	float x = voronoiNoise(SCREEN_UV*30.0 + vec2(0.0, offset)).y;
-	COLOR.rgb = vec3(x,x,x);
+	float x = voronoiNoise(SCREEN_UV * scale + offset).y;
+	COLOR.rgb = vec3(x, x, x);
 	// Called for every pixel the material is visible on.
 }
