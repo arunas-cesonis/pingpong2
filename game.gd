@@ -1,16 +1,17 @@
 extends Node2D
 
-# TODO
-# 1. DONE. Restrict reflection normal from player pad to Vector2.UP
-# 2. DONE. 3 states for bricks.
-# 3. DONE. Spawn nodes on collision
-# 4. DONE. Bricks spawn on timer and scroll down. Generated grid, scrolls down.
-# 5. DONE. When ball is close to pad and F is pressed, extra boost is applied. 3 seperate influence zones.
-# 6. DONE. Make player reflection angle like in DX-BALL
-# 7. Mouse controls. Pad goes to mouse cursor with slight lag.
-# 8. Bricks that do not touch should fall down.
-# 9. Instead of catching items, buy them for score.
-# 10. Sound
+# DONE. Restrict reflection normal from player pad to Vector2.UP
+# DONE. 3 states for bricks.
+# DONE. Spawn nodes on collision
+# DONE. Bricks spawn on timer and scroll down. Generated grid, scrolls down.
+# DONE. When ball is close to pad and F is pressed, extra boost is applied. 3 seperate influence zones.
+# DONE. Make player reflection angle like in DX-BALL
+# Mouse controls. Pad goes to mouse cursor with slight lag.
+# More gaps to extend the game.
+# Slow down scrolling.
+# Bricks that do not touch should fall down.
+# Instead of catching items, buy them for score.
+# Sound
 
 const Brick = preload("res://brick.gd")
 const BrickTscn = preload("res://brick.tscn")
