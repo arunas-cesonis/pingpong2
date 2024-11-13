@@ -6,10 +6,11 @@ extends Node2D
 # 3. DONE. Spawn nodes on collision
 # 4. DONE. Bricks spawn on timer and scroll down. Generated grid, scrolls down.
 # 5. DONE. When ball is close to pad and F is pressed, extra boost is applied. 3 seperate influence zones.
-# 6. Make player reflection angle like in DX-BALL
-# 7. Mouse controls
+# 6. DONE. Make player reflection angle like in DX-BALL
+# 7. Mouse controls. Pad goes to mouse cursor with slight lag.
 # 8. Bricks that do not touch should fall down.
-# 9. Sound
+# 9. Instead of catching items, buy them for score.
+# 10. Sound
 
 const Brick = preload("res://brick.gd")
 const BrickTscn = preload("res://brick.tscn")
