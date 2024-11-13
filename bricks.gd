@@ -10,9 +10,11 @@ var offset := 0.0
 var brick_rect := Rect2()
 var voronoi_scale := Vector2(10.0, 10.0)
 var voronoi_offset := Vector2(0.0, 0.0)
+var voronoi_image: Image = null
 
 @onready var container := $Container
 @onready var texture_polygon := $SubViewportContainer/SubViewport/Polygon2D
+@onready var texture_subviewport: SubViewport = $SubViewportContainer/SubViewport
 
 const SCROLL_TIME := 0.2
 const SCROLL_SPAWN_TIME := 1.0
@@ -20,29 +22,49 @@ const SCROLL_WAIT := 2.0
 
 var scroll_amount := Vector2.ZERO
 
-func _init() -> void:
-	pass
+func _update_voronoi_parameters() -> void:
+	texture_polygon.material.set_shader_parameter("scale", voronoi_scale)
+	texture_polygon.material.set_shader_parameter("offset", voronoi_offset)
 
-func _create_brick(x: int, y: int) -> Brick:
+func _aspect() -> float:
+	var size := get_viewport_rect().size
+	return size.y / size.x
+
+func _regen_voronoi_image() -> void:
+	voronoi_image = texture_subviewport.get_texture().get_image()
+	var w := bricks_w
+	var h := ceili(_aspect() * w)
+	voronoi_image.resize(w, h, Image.INTERPOLATE_NEAREST)
+
+func _brick_position(x: int, y: int) -> Vector2:
 	var bricks_width := bricks_w * brick_rect.size.x
 	var center := Vector2(get_viewport_rect().size.x * 0.5 - bricks_width * 0.5, top_offset)
+	return brick_rect.size * Vector2(x, y) - brick_rect.position + center
+
+func _create_brick(p: Vector2) -> Brick:
 	var brick: Brick = BrickTscn.instantiate()
 	brick.initial_health = 1;
-	brick.position = brick_rect.size * Vector2(x, y) - brick_rect.position + center
+	brick.position = p
 	return brick
 
-func _create_bricks() -> void:
+func _add_brick_checked(x: int, y: int) -> void:
+	var pixel = voronoi_image.get_pixel(x, y)
+	if (pixel.r + pixel.g + pixel.b) / 3.0 > 0.2:
+		var p := _brick_position(x, y)
+		var b := _create_brick(p)
+		container.add_child(b)
+
+func _ready_create_bricks() -> void:
 	var brick: Brick = BrickTscn.instantiate()
 	brick_rect = brick.get_rect()
 	brick.queue_free()
 	scroll_amount = Vector2(0.0, brick_rect.size.y)
 	for y in range(bricks_h):
 		for x in range(bricks_w):
-			var pixel := Color.WHITE
-			if pixel != Color.BLACK:
-				container.add_child(_create_brick(x, y))
+			_add_brick_checked(x, y)
 
 func _scroll_interval() -> void:
+	_regen_voronoi_image()
 	var offset_y := -voronoi_scale.y * (brick_rect.size.y / get_viewport_rect().size.y)
 	create_tween().tween_property(self, "voronoi_offset", Vector2(0.0, offset_y), SCROLL_TIME).as_relative()
 	for child in container.get_children():
@@ -55,15 +77,16 @@ func _scroll_interval() -> void:
 		if not is_inside_tree():
 			break
 		await get_tree().create_timer(time_per_brick, false, true).timeout
-		container.add_child(_create_brick(x, 0))
+		_add_brick_checked(x, 0)
 
 func _ready() -> void:
-	_create_bricks()
+	await RenderingServer.frame_post_draw
+	_regen_voronoi_image()
+	_ready_create_bricks()
 	var tw := get_tree().create_tween()
 	tw.tween_interval(SCROLL_WAIT)
 	tw.tween_callback(_scroll_interval)
 	tw.set_loops()
 
 func _process(_delta: float) -> void:
-	texture_polygon.material.set_shader_parameter("scale", voronoi_scale)
-	texture_polygon.material.set_shader_parameter("offset", voronoi_offset)
+	_update_voronoi_parameters()
