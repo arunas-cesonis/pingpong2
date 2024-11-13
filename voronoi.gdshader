@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
-uniform vec2 offset;
-uniform vec2 scale;
+uniform vec2 offset = vec2(0.0, 0.0);
+uniform vec2 scale = vec2(10.0, 17.77);
 
 void vertex() {
 	// Called for every vertex the material is visible on.

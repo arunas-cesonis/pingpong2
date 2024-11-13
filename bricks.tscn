@@ -5,16 +5,16 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4tget"]
 shader = ExtResource("2_iq0s6")
-shader_parameter/offset = null
-shader_parameter/scale = Vector2(10, 10)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/scale = Vector2(10, 17)
 
 [node name="Bricks" type="Node2D"]
 script = ExtResource("1_fj2te")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-offset_left = 14.0
+offset_left = 15.0
 offset_top = 16.0
-offset_right = 526.0
+offset_right = 527.0
 offset_bottom = 944.0
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
