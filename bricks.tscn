@@ -12,11 +12,13 @@ shader_parameter/scale = Vector2(10, 10)
 script = ExtResource("1_fj2te")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 14.0
+offset_top = 16.0
+offset_right = 526.0
+offset_bottom = 944.0
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-size = Vector2i(540, 960)
+size = Vector2i(512, 928)
 
 [node name="Polygon2D" type="Polygon2D" parent="SubViewportContainer/SubViewport"]
 material = SubResource("ShaderMaterial_4tget")

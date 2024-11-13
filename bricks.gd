@@ -80,6 +80,7 @@ func _scroll_interval() -> void:
 		_add_brick_checked(x, 0)
 
 func _ready() -> void:
+	voronoi_scale.y *= _aspect()
 	await RenderingServer.frame_post_draw
 	_regen_voronoi_image()
 	_ready_create_bricks()
