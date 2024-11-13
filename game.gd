@@ -15,6 +15,7 @@ extends Node2D
 ## Power up splash damage.
 ## Power up buy multiple balls.
 ## Power up critical boost other power ups.
+# Multi-hit brick explodes with radius.
 # Sound
 
 const Brick = preload("res://brick.gd")
