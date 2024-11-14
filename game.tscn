@@ -1,10 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=15 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_jahp3"]
 [ext_resource type="PackedScene" uid="uid://dcgovrgwsr7io" path="res://demo_spawn_on_collision.tscn" id="2_g117g"]
 [ext_resource type="PackedScene" uid="uid://ks1v6g6xn1p7" path="res://bricks.tscn" id="3_8u3lx"]
 [ext_resource type="Texture2D" uid="uid://bhbvodns08cne" path="res://graphics1.png" id="3_hoi0h"]
 [ext_resource type="Script" path="res://debug.gd" id="3_xqd3c"]
+[ext_resource type="AudioStream" uid="uid://cgvcno7fwtxqf" path="res://sounds/boost.wav" id="6_mal7r"]
+[ext_resource type="AudioStream" uid="uid://cbc0d7cqr4yhm" path="res://sounds/collision2.wav" id="7_s326o"]
+[ext_resource type="AudioStream" uid="uid://dslylnpndtw58" path="res://sounds/collision.wav" id="8_vli6k"]
+[ext_resource type="AudioStream" uid="uid://7fwrxgv6g8b6" path="res://sounds/destroy.wav" id="9_hjfct"]
 
 [sub_resource type="Curve" id="Curve_ctkgm"]
 max_value = 1000.0
@@ -58,6 +62,7 @@ rotation = 1.5708
 shape = SubResource("RectangleShape2D_snhc6")
 
 [node name="Bricks" parent="." instance=ExtResource("3_8u3lx")]
+position = Vector2(-11, -6)
 scale = Vector2(0.994315, 0.985242)
 
 [node name="Player" type="AnimatableBody2D" parent="."]
@@ -136,8 +141,6 @@ shape = SubResource("CircleShape2D_wka3s")
 [node name="Debug" type="Node2D" parent="."]
 script = ExtResource("3_xqd3c")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-
 [node name="Score" type="Label" parent="."]
 offset_left = 18.0
 offset_top = 11.0
@@ -145,3 +148,29 @@ offset_right = 66.0
 offset_bottom = 34.0
 scale = Vector2(0.991981, 1.00736)
 text = "Score:"
+
+[node name="BoostLabel" type="Label" parent="."]
+offset_left = 16.0
+offset_top = 35.0
+offset_right = 64.0
+offset_bottom = 58.0
+scale = Vector2(0.991981, 1.00736)
+text = "Boost:"
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Boost" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("6_mal7r")
+
+[node name="Collision2" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_s326o")
+
+[node name="Collision" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_vli6k")
+
+[node name="Destroy" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("9_hjfct")
+
+[node name="BoostBar" type="Polygon2D" parent="."]
+position = Vector2(118, 39)
+polygon = PackedVector2Array(0, 0, 200, 0, 200, 16, 0, 16)

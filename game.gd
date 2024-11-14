@@ -26,10 +26,6 @@ const Brick = preload("res://brick.gd")
 const BrickTscn = preload("res://brick.tscn")
 const RotatingBrick = preload("res://rotating_brick.gd")
 
-const CollisionSound = preload("res://sounds/collision.wav")
-const Collision2Sound = preload("res://sounds/collision2.wav")
-const DestroySound = preload("res://sounds/destroy.wav")
-
 @onready var player: AnimatableBody2D = $Player
 @onready var player_collision_shape: RectangleShape2D = player.find_child("CollisionShape2D", false).shape
 @onready var ball: AnimatableBody2D = $Ball
@@ -76,7 +72,7 @@ var brick_progress := 0.0
 signal finished(score: int)
 
 func _ready() -> void:
-	pass
+	$BoostBar.scale.x = 0.0
 
 func _ball_speed_player_curve() -> float:
 	return ball_speed_player_collision.sample(ball_speed_player_time / ball_speed_player_duration)
@@ -95,10 +91,8 @@ func _limit_bounce_angle(normal: Vector2, direction: Vector2, limit_min: float, 
 	var new_angle = signf(angle) * clampf(absf(angle), limit_min, limit_max)
 	return Vector2.from_angle(normal.angle() + new_angle)
 
-func _play_sound(sound: Resource) -> void:
-	$AudioStreamPlayer2D.stop()
-	$AudioStreamPlayer2D.stream = sound
-	$AudioStreamPlayer2D.play()
+func _play_sound(sound: AudioStreamPlayer) -> void:
+	sound.play()
 
 func _calc_influence() -> void:
 	var distance := absf(player.position.y - ball.position.y)
@@ -116,6 +110,8 @@ func _calc_influence() -> void:
 				if OS.has_feature('debug'):
 					$Debug.values.last_boost = "%.2f%%" % (100.0 - (amount * 100.0))
 				influence_time = amount * influence_duration
+				$Sounds/Boost.pitch_scale = 2.0 * (1.0 - amount)
+				_play_sound($Sounds/Boost)
 	
 	elif influence_state == InfluenceState.USED:
 		if not inside:
@@ -145,7 +141,7 @@ func _physics_process(delta: float) -> void:
 		var bounce_angle_limit_max := 90.0
 
 		if collision.get_collider() == player:
-			_play_sound(CollisionSound)
+			_play_sound($Sounds/Collision)
 
 			ball.position.y = minf(player.position.y - 48.0, ball.position.y)
 
@@ -159,7 +155,7 @@ func _physics_process(delta: float) -> void:
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
 			if brick.apply_damage(1):
-				_play_sound(DestroySound)
+				_play_sound($Sounds/Destroy)
 				score += 1
 				_update_score_graphics()
 				if spawn_on_collision:
@@ -167,13 +163,13 @@ func _physics_process(delta: float) -> void:
 					tmp.position = collision.get_position() 
 					add_child(tmp)
 			else:
-				_play_sound(Collision2Sound)
+				_play_sound($Sounds/Collision2)
 			var amin := deg_to_rad(brick_angle_limit_min)
 			var amax := deg_to_rad(brick_angle_limit_max)
 			ball_direction = ball_direction.bounce(normal).normalized()
 			ball_direction = _limit_bounce_angle(normal, ball_direction, amin, amax)
 		else:
-			_play_sound(CollisionSound)
+			_play_sound($Sounds/Collision)
 			var amin := deg_to_rad(wall_angle_limit_min)
 			var amax := deg_to_rad(wall_angle_limit_max)
 			ball_direction = ball_direction.bounce(normal).normalized()
@@ -191,7 +187,13 @@ func _physics_process(delta: float) -> void:
 		else:
 			finished.emit(score)
 
+func _update_boost_graphics() -> void:
+	var percent := _influence_curve() / influence_curve.max_value
+	$BoostBar.scale.x = percent
+	$BoostLabel.text = "Boost: %d%%" % int(percent * 100.0)
+
 func _process(_delta: float) -> void:
+	_update_boost_graphics()
 	if OS.has_feature('debug'):
 		$Debug.update_value("score", score)
 		$Debug.update_value("$Bricks.get_child_count()", $Bricks.get_child_count())
