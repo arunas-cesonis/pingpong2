@@ -1,6 +1,5 @@
 extends Node2D
 
-
 var bounce = {
 	position = Vector2(0.0, 0.0),
 	velocity_in = Vector2(0.0, 0.0),

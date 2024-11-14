@@ -79,6 +79,7 @@ func _ready() -> void:
 
 func _input(_event) -> void:
 	if Input.is_action_just_pressed("Reset"):
+		print(get_tree().current_scene)
 		get_tree().reload_current_scene()
 
 func _ball_speed_player_curve() -> float:
@@ -129,7 +130,7 @@ func _calc_influence() -> void:
 	$Debug.influence.max_distance = influence_max_distance
 
 func _physics_process(delta: float) -> void:
-	player.move_and_collide(player_velocity * delta)
+	player.move_and_collide(Vector2(player.get_local_mouse_position().x * 0.5, 0.0))
 	ball_speed_player_time = minf(ball_speed_player_duration, ball_speed_player_time + delta)
 	influence_time = minf(influence_duration, influence_time + delta)
 
@@ -189,14 +190,9 @@ func _physics_process(delta: float) -> void:
 			finished.emit(score)
 
 func _process(_delta: float) -> void:
-	var direction = 0.0
-	if Input.is_action_pressed("MoveLeft"):
-		direction = -1.0
-	elif Input.is_action_pressed("MoveRight"):
-		direction = 1.0
-	player_velocity.x = direction * player_speed
 	$Debug.update_value("score", score)
 	$Debug.update_value("$Bricks.get_child_count()", $Bricks.get_child_count())
 	$Debug.update_value("_ball_speed()", _ball_speed())
 	$Debug.update_value("_ball_speed_player_curve()", _ball_speed_player_curve())
 	$Debug.update_value("_influence_curve()", _influence_curve())
+	$Debug.update_value("player_velocity", player_velocity)
