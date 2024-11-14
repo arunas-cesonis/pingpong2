@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://chc5a3xqiv7b"]
+[gd_scene load_steps=16 format=3 uid="uid://chc5a3xqiv7b"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_jahp3"]
 [ext_resource type="PackedScene" uid="uid://dcgovrgwsr7io" path="res://demo_spawn_on_collision.tscn" id="2_g117g"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cbc0d7cqr4yhm" path="res://sounds/collision2.wav" id="7_s326o"]
 [ext_resource type="AudioStream" uid="uid://dslylnpndtw58" path="res://sounds/collision.wav" id="8_vli6k"]
 [ext_resource type="AudioStream" uid="uid://7fwrxgv6g8b6" path="res://sounds/destroy.wav" id="9_hjfct"]
+[ext_resource type="AudioStream" uid="uid://bqmlbxw2my4mh" path="res://sounds/music.mp3" id="10_dv18j"]
 
 [sub_resource type="Curve" id="Curve_ctkgm"]
 max_value = 1000.0
@@ -170,6 +171,10 @@ stream = ExtResource("8_vli6k")
 
 [node name="Destroy" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("9_hjfct")
+
+[node name="Music" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("10_dv18j")
+autoplay = true
 
 [node name="BoostBar" type="Polygon2D" parent="."]
 position = Vector2(118, 39)
