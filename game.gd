@@ -110,7 +110,6 @@ func _calc_influence() -> void:
 				if OS.has_feature('debug'):
 					$Debug.values.last_boost = "%.2f%%" % (100.0 - (amount * 100.0))
 				influence_time = amount * influence_duration
-				$Sounds/Boost.pitch_scale = 2.0 * (1.0 - amount)
 				_play_sound($Sounds/Boost)
 	
 	elif influence_state == InfluenceState.USED:
