@@ -11,6 +11,10 @@ func _init() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 func _input(_event) -> void:
+	if Input.is_action_just_pressed("Reset"):
+		get_tree().reload_current_scene()
+	if Input.is_action_just_pressed("Quit"):
+		get_tree().quit()
 	if in_game:
 		if Input.is_action_just_pressed("Pause"):
 			get_tree().paused = not get_tree().paused

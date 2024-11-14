@@ -6,15 +6,16 @@ extends Node2D
 # DONE. Bricks spawn on timer and scroll down. Generated grid, scrolls down.
 # DONE. When ball is close to pad and F is pressed, extra boost is applied. 3 seperate influence zones.
 # DONE. Make player reflection angle like in DX-BALL
-# Mouse controls. Pad goes to mouse cursor with slight lag.
+# DONE. Mouse controls. Pad goes to mouse cursor with slight lag.
+# DONE. Slow down scrolling.
 # More gaps to extend the game.
-# Slow down scrolling.
 # Bricks that do not touch should fall down.
 # Buy power ups for score:
 ## Power up how many bricks a ball can go through.
 ## Power up splash damage.
 ## Power up buy multiple balls.
 ## Power up critical boost other power ups.
+## Power up horizontal boost. Limit reflection angle.
 # Multi-hit brick explodes with radius.
 # Zone of influence:
 ## Destroy bricks.
@@ -77,11 +78,6 @@ signal finished(score: int)
 func _ready() -> void:
 	pass
 
-func _input(_event) -> void:
-	if Input.is_action_just_pressed("Reset"):
-		print(get_tree().current_scene)
-		get_tree().reload_current_scene()
-
 func _ball_speed_player_curve() -> float:
 	return ball_speed_player_collision.sample(ball_speed_player_time / ball_speed_player_duration)
 
@@ -117,17 +113,22 @@ func _calc_influence() -> void:
 			if Input.is_action_just_pressed("Boost"):
 				influence_state = InfluenceState.USED
 				var amount := (distance - influence_min_distance) / (influence_max_distance - influence_min_distance)
-				$Debug.values.last_boost = "%.2f%%" % (100.0 - (amount * 100.0))
+				if OS.has_feature('debug'):
+					$Debug.values.last_boost = "%.2f%%" % (100.0 - (amount * 100.0))
 				influence_time = amount * influence_duration
 	
 	elif influence_state == InfluenceState.USED:
 		if not inside:
 			influence_state = InfluenceState.TOO_FAR
 
-	$Debug.influence.player = player.position
-	$Debug.influence.ball = ball.position
-	$Debug.influence.min_distance = influence_min_distance
-	$Debug.influence.max_distance = influence_max_distance
+	if OS.has_feature('debug'):
+		$Debug.influence.player = player.position
+		$Debug.influence.ball = ball.position
+		$Debug.influence.min_distance = influence_min_distance
+		$Debug.influence.max_distance = influence_max_distance
+
+func _update_score_graphics() -> void:
+	$Score.text = "Score: " + str(score)
 
 func _physics_process(delta: float) -> void:
 	player.move_and_collide(Vector2(player.get_local_mouse_position().x * 0.5, 0.0))
@@ -160,6 +161,11 @@ func _physics_process(delta: float) -> void:
 			if brick.apply_damage(1):
 				_play_sound(DestroySound)
 				score += 1
+				_update_score_graphics()
+				if spawn_on_collision:
+					var tmp: Node2D = spawn_on_collision.instantiate()
+					tmp.position = collision.get_position() 
+					add_child(tmp)
 			else:
 				_play_sound(Collision2Sound)
 			var amin := deg_to_rad(brick_angle_limit_min)
@@ -173,10 +179,6 @@ func _physics_process(delta: float) -> void:
 			ball_direction = ball_direction.bounce(normal).normalized()
 			ball_direction = _limit_bounce_angle(normal, ball_direction, amin, amax)
 
-		if spawn_on_collision:
-			var tmp: Node2D = spawn_on_collision.instantiate()
-			tmp.position = collision.get_position() 
-			add_child(tmp)
 
 		bounce_angle_limit_min = deg_to_rad(bounce_angle_limit_min)
 		bounce_angle_limit_max = deg_to_rad(bounce_angle_limit_max)
@@ -190,9 +192,10 @@ func _physics_process(delta: float) -> void:
 			finished.emit(score)
 
 func _process(_delta: float) -> void:
-	$Debug.update_value("score", score)
-	$Debug.update_value("$Bricks.get_child_count()", $Bricks.get_child_count())
-	$Debug.update_value("_ball_speed()", _ball_speed())
-	$Debug.update_value("_ball_speed_player_curve()", _ball_speed_player_curve())
-	$Debug.update_value("_influence_curve()", _influence_curve())
-	$Debug.update_value("player_velocity", player_velocity)
+	if OS.has_feature('debug'):
+		$Debug.update_value("score", score)
+		$Debug.update_value("$Bricks.get_child_count()", $Bricks.get_child_count())
+		$Debug.update_value("_ball_speed()", _ball_speed())
+		$Debug.update_value("_ball_speed_player_curve()", _ball_speed_player_curve())
+		$Debug.update_value("_influence_curve()", _influence_curve())
+		$Debug.update_value("player_velocity", player_velocity)

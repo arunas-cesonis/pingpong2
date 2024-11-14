@@ -19,14 +19,6 @@ var influence = {
 
 var values = {}
 const BOUNCE_SIZE := 100.0
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
 	
 func update_value(key: String, value: Variant) -> void:
 	if not key in values or values[key] != value:
@@ -79,11 +71,13 @@ func _draw_influence(d: Dictionary) -> void:
 		draw_dashed_line(a, b, Color.WHITE, 2.0, 5.0, false)
 
 func _draw():
+	if not OS.has_feature('debug'):
+		return
 	# bounce
 	_draw_bounce(bounce)
 	_draw_influence(influence)
 	# values
-	var h := 32.0
+	var h := 132.0
 	for k in values:
 		var s = k + ": " + str(values[k])
 		var pos := Vector2(32.0, h)
