@@ -6,6 +6,16 @@ const Outro = preload("res://outro.tscn")
 
 var current_scene: Node = null
 var in_game := false
+var config := ConfigFile.new()
+@onready var music: AudioStreamPlayer = $Music
+
+func _config_get_music() -> bool:
+	config.load("user://config.cfg")
+	return config.get_value("config", "music", false)
+
+func _config_set_music(enabled: bool) -> void:
+	config.set_value("config", "music", enabled)
+	config.save("user://config.cfg")
 
 func _init() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
@@ -13,6 +23,10 @@ func _init() -> void:
 func _input(_event) -> void:
 	if Input.is_action_just_pressed("Reset"):
 		get_tree().reload_current_scene()
+	if Input.is_action_just_pressed("Toggle Music"):
+		var enabled := not _config_get_music()
+		music.playing = enabled
+		_config_set_music(enabled)
 	if Input.is_action_just_pressed("Quit"):
 		get_tree().quit()
 	if in_game:
@@ -30,6 +44,7 @@ func _set_current_scene(s: Node) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	music.playing = _config_get_music()
 	in_game = false
 	var intro = Intro.instantiate()
 	_set_current_scene(intro)

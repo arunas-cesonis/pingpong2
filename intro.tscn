@@ -8,3 +8,13 @@ offset_top = 379.0
 offset_right = 370.0
 offset_bottom = 402.0
 text = "Click to play"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 93.0
+offset_top = 63.0
+offset_right = 133.0
+offset_bottom = 86.0
+text = "R - reset
+P - pause
+F, Space, Left Mouse - boost
+M - toggle music"

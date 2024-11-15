@@ -109,8 +109,8 @@ func _calc_influence() -> void:
 				var amount := (distance - influence_min_distance) / (influence_max_distance - influence_min_distance)
 				if OS.has_feature('debug'):
 					$Debug.values.last_boost = "%.2f%%" % (100.0 - (amount * 100.0))
-				influence_time = amount * influence_duration
 				_play_sound($Sounds/Boost)
+				influence_time = amount * influence_duration
 	
 	elif influence_state == InfluenceState.USED:
 		if not inside:
