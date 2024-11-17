@@ -98,6 +98,6 @@ func _ready() -> void:
 	tw.tween_callback(_scroll_interval)
 	tw.set_loops()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if SMOOTH_SCROLL:
 		_update_voronoi_parameters()
