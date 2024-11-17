@@ -49,7 +49,7 @@ func _create_brick(p: Vector2) -> Brick:
 
 func _add_brick_checked(x: int, y: int) -> void:
 	var pixel = voronoi_image.get_pixel(x, y)
-	if (pixel.r + pixel.g + pixel.b) / 3.0 > 0.2:
+	if (pixel.r + pixel.g + pixel.b) / 3.0 > 0.5:
 		var p := _brick_position(x, y)
 		var b := _create_brick(p)
 		container.add_child(b)
