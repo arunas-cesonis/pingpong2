@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6p7ocg803f8u"]
+
+[ext_resource type="Texture2D" uid="uid://ciid324nb0op4" path="res://block.png" id="1_nq5om"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_snhc6"]
+size = Vector2(32, 960)
+
+[node name="WallVertical" type="StaticBody2D"]
+position = Vector2(0, 480)
+
+[node name="Block" type="Sprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 2
+scale = Vector2(4, 4)
+texture = ExtResource("1_nq5om")
+region_enabled = true
+region_rect = Rect2(0, 0, 8, 240)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_snhc6")

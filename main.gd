@@ -9,24 +9,31 @@ var in_game := false
 var config := ConfigFile.new()
 @onready var music: AudioStreamPlayer = $Music
 
-func _config_get_music() -> bool:
+func _config_get_bool(key: String) -> bool:
 	config.load("user://config.cfg")
-	return config.get_value("config", "music", false)
+	return config.get_value("config", key, false)
 
-func _config_set_music(enabled: bool) -> void:
-	config.set_value("config", "music", enabled)
+func _config_set_bool(key: String, enabled: bool) -> void:
+	config.set_value("config", key, enabled)
 	config.save("user://config.cfg")
 
+func _set_cursor(yes: bool) -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE if yes else Input.MOUSE_MODE_HIDDEN)
+
 func _init() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	_set_cursor(_config_get_bool("cursor"))
 
 func _input(_event) -> void:
 	if Input.is_action_just_pressed("Reset"):
 		get_tree().reload_current_scene()
 	if Input.is_action_just_pressed("Toggle Music"):
-		var enabled := not _config_get_music()
+		var enabled := not _config_get_bool("music")
 		music.playing = enabled
-		_config_set_music(enabled)
+		_config_set_bool("music", enabled)
+	if Input.is_action_just_pressed("Toggle Cursor"):
+		var enabled := not _config_get_bool("cursor")
+		_set_cursor(enabled)
+		_config_set_bool("cursor", enabled)
 	if Input.is_action_just_pressed("Quit"):
 		get_tree().quit()
 	if in_game:
@@ -44,7 +51,8 @@ func _set_current_scene(s: Node) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	music.playing = _config_get_music()
+	music.playing = _config_get_bool("music")
+	_set_cursor(_config_get_bool("cursor"))
 	in_game = false
 	var intro = Intro.instantiate()
 	_set_current_scene(intro)
