@@ -153,11 +153,12 @@ position = Vector2(118, 39)
 polygon = PackedVector2Array(0, 0, 200, 0, 200, 16, 0, 16)
 
 [node name="WallVertical" parent="." instance=ExtResource("3_bbarr")]
-position = Vector2(0, 496)
+position = Vector2(-2, 496)
 
 [node name="WallVertical2" parent="." instance=ExtResource("3_bbarr")]
-position = Vector2(544, 496)
+position = Vector2(542, 496)
 
 [node name="WallTop" parent="." instance=ExtResource("3_bbarr")]
-position = Vector2(176, 0)
-rotation = 4.71239
+position = Vector2(174, 0)
+rotation = 1.5708
+scale = Vector2(1, -1)
