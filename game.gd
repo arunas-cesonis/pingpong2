@@ -8,7 +8,7 @@ extends Node2D
 # DONE. Make player reflection angle like in DX-BALL
 # DONE. Mouse controls. Pad goes to mouse cursor with slight lag.
 # DONE. Slow down scrolling.
-# More gaps to extend the game.
+# DONE. More gaps to extend the game.
 # Bricks that do not touch should fall down.
 # Buy power ups for score:
 ## Power up how many bricks a ball can go through.
