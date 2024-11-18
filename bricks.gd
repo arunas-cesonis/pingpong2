@@ -17,7 +17,7 @@ var voronoi_image: Image = null
 
 const SCROLL_TIME := 0.2
 const SCROLL_SPAWN_TIME := 1.0
-const SCROLL_WAIT := 5.0
+const SCROLL_WAIT := 4.0
 const SMOOTH_SCROLL := false
 
 var scroll_amount := Vector2.ZERO
@@ -67,7 +67,11 @@ func _ready_create_bricks() -> void:
 		for x in range(BRICKS_W):
 			_add_brick_checked(x, y)
 
-func _scroll_interval() -> void:
+func _scroll_iter() -> bool:
+	# Wait
+	if not is_inside_tree():
+		return false
+	await get_tree().create_timer(SCROLL_WAIT, false, true).timeout
 
 	# Move bricks and texture down 
 	var offset_y := -voronoi_scale.y * (brick_rect.size.y / get_viewport_rect().size.y)
@@ -75,9 +79,12 @@ func _scroll_interval() -> void:
 	for child in container.get_children():
 		var brick: Brick = child
 		brick.create_tween().tween_property(brick, "position", scroll_amount, SCROLL_TIME).as_relative()
+
+	if not is_inside_tree():
+		return false
 	await get_tree().create_timer(SCROLL_TIME, false, true).timeout
 
-	# Get the texture image
+	# Fetch the texture image
 	await _regen_voronoi_image()
 
 	# Spawn new bricks one-by-one
@@ -85,18 +92,21 @@ func _scroll_interval() -> void:
 	for x in range(BRICKS_W):
 		# Exit in case this node is no longer attached (i.e. a game has ended)
 		if not is_inside_tree():
-			break
+			return false
 		await get_tree().create_timer(time_per_brick, false, true).timeout
 		_add_brick_checked(x, 0)
+
+	return true
+
+func _scroll_loop() -> void:
+	while await _scroll_iter():
+		pass
 
 func _ready() -> void:
 	voronoi_scale.y *= _aspect()
 	await _regen_voronoi_image()
 	_ready_create_bricks()
-	var tw := get_tree().create_tween()
-	tw.tween_interval(SCROLL_WAIT)
-	tw.tween_callback(_scroll_interval)
-	tw.set_loops()
+	_scroll_loop()
 
 func _process(_delta: float) -> void:
 	if SMOOTH_SCROLL:
