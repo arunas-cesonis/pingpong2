@@ -4,7 +4,8 @@ const BrickTscn = preload("res://brick.tscn")
 const Brick = preload("res://brick.gd")
 
 const BRICKS_W := 16
-const BRICKS_H := 16
+const BRICKS_H := 29
+const BRICKS_INIT_H := 16
 const TOP_OFFSET := 16
 var brick_rect := Rect2()
 var voronoi_scale := Vector2(10.0, 10.0)
@@ -18,7 +19,7 @@ var voronoi_image: Image = null
 const SCROLL_TIME := 0.2
 const SCROLL_SPAWN_TIME := 1.0
 const SCROLL_WAIT := 4.0
-const SMOOTH_SCROLL := false
+const SMOOTH_SCROLL := true
 
 var scroll_amount := Vector2.ZERO
 
@@ -36,9 +37,7 @@ func _regen_voronoi_image() -> void:
 		texture_subviewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 	await RenderingServer.frame_post_draw
 	voronoi_image = texture_subviewport.get_texture().get_image()
-	var w := BRICKS_W
-	var h := ceili(_aspect() * w)
-	voronoi_image.resize(w, h, Image.INTERPOLATE_NEAREST)
+	voronoi_image.resize(BRICKS_W, BRICKS_H, Image.INTERPOLATE_NEAREST)
 
 func _brick_position(x: int, y: int) -> Vector2:
 	var bricks_width := BRICKS_W * brick_rect.size.x
@@ -63,7 +62,7 @@ func _ready_create_bricks() -> void:
 	brick_rect = brick.get_rect()
 	brick.queue_free()
 	scroll_amount = Vector2(0.0, brick_rect.size.y)
-	for y in range(BRICKS_H):
+	for y in range(BRICKS_INIT_H):
 		for x in range(BRICKS_W):
 			_add_brick_checked(x, y)
 

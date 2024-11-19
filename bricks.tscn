@@ -13,9 +13,9 @@ script = ExtResource("1_fj2te")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 modulate = Color(0, 0, 0, 1)
-offset_left = 15.0
+offset_left = 14.0
 offset_top = 16.0
-offset_right = 527.0
+offset_right = 526.0
 offset_bottom = 944.0
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
