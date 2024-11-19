@@ -7,6 +7,7 @@ const BRICKS_W := 16
 const BRICKS_H := 29
 const BRICKS_INIT_H := 16
 const TOP_OFFSET := 16
+const LEFT_OFFSET := 14
 var brick_rect := Rect2()
 var voronoi_scale := Vector2(10.0, 10.0)
 var voronoi_offset := Vector2(0.0, 0.0)
@@ -40,8 +41,7 @@ func _regen_voronoi_image() -> void:
 	voronoi_image.resize(BRICKS_W, BRICKS_H, Image.INTERPOLATE_NEAREST)
 
 func _brick_position(x: int, y: int) -> Vector2:
-	var bricks_width := BRICKS_W * brick_rect.size.x
-	var center := Vector2(get_viewport_rect().size.x * 0.5 - bricks_width * 0.5, TOP_OFFSET)
+	var center := Vector2(LEFT_OFFSET, TOP_OFFSET)
 	return brick_rect.size * Vector2(x, y) - brick_rect.position + center
 
 func _create_brick(p: Vector2) -> Brick:
