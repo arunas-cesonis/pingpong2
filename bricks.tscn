@@ -13,14 +13,16 @@ script = ExtResource("1_fj2te")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 modulate = Color(0, 0, 0, 1)
+texture_filter = 1
 offset_left = 14.0
 offset_top = 16.0
 offset_right = 526.0
 offset_bottom = 944.0
+scale = Vector2(32, 32)
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(512, 928)
+size = Vector2i(16, 29)
 render_target_update_mode = 4
 
 [node name="Polygon2D" type="Polygon2D" parent="SubViewportContainer/SubViewport"]

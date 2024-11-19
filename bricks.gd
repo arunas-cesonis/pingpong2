@@ -19,7 +19,7 @@ var voronoi_image: Image = null
 const SCROLL_TIME := 0.2
 const SCROLL_SPAWN_TIME := 1.0
 const SCROLL_WAIT := 4.0
-const SMOOTH_SCROLL := true
+const SMOOTH_SCROLL := false
 
 var scroll_amount := Vector2.ZERO
 
