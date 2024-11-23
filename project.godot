@@ -28,6 +28,12 @@ window/stretch/mode="viewport"
 
 enabled=PackedStringArray()
 
+[gui]
+
+theme/custom_font="res://fonts/Perfect DOS VGA 437.ttf"
+theme/default_font_antialiasing=0
+theme/default_font_hinting=0
+
 [input]
 
 Reset={

@@ -21,3 +21,10 @@ frame = 6
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource("RectangleShape2D_br3nh")
+
+[node name="Debug" type="Label" parent="."]
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 25.0
+offset_bottom = 8.0
+theme_override_font_sizes/font_size = 12

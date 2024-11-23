@@ -118,22 +118,6 @@ shape = SubResource("CircleShape2D_wka3s")
 [node name="Debug" type="Node2D" parent="."]
 script = ExtResource("3_xqd3c")
 
-[node name="Score" type="Label" parent="."]
-offset_left = 18.0
-offset_top = 11.0
-offset_right = 66.0
-offset_bottom = 34.0
-scale = Vector2(0.991981, 1.00736)
-text = "Score:"
-
-[node name="BoostLabel" type="Label" parent="."]
-offset_left = 16.0
-offset_top = 35.0
-offset_right = 64.0
-offset_bottom = 58.0
-scale = Vector2(0.991981, 1.00736)
-text = "Boost:"
-
 [node name="Sounds" type="Node" parent="."]
 
 [node name="Collision2" type="AudioStreamPlayer" parent="Sounds"]
@@ -162,3 +146,20 @@ position = Vector2(542, 496)
 position = Vector2(174, 0)
 rotation = 1.5708
 scale = Vector2(1, -1)
+
+[node name="Score" type="Label" parent="."]
+offset_left = 18.0
+offset_top = 11.0
+offset_right = 66.0
+offset_bottom = 34.0
+scale = Vector2(0.991981, 1.00736)
+theme_override_font_sizes/font_size = 48
+text = "Score:"
+
+[node name="BoostLabel" type="Label" parent="."]
+offset_left = 16.0
+offset_top = 35.0
+offset_right = 65.0
+offset_bottom = 58.0
+scale = Vector2(0.991981, 1.00736)
+text = "Boost:"

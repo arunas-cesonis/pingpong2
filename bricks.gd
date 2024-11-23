@@ -4,7 +4,7 @@ const BrickTscn = preload("res://brick.tscn")
 const Brick = preload("res://brick.gd")
 
 const BRICKS_W := 16
-const BRICKS_H := 29
+const BRICKS_H := 28
 const BRICKS_INIT_H := 16
 const TOP_OFFSET := 16
 const LEFT_OFFSET := 14
@@ -14,12 +14,13 @@ var voronoi_offset := Vector2(0.0, 0.0)
 var voronoi_image: Image = null
 
 @onready var container := $Container
+@onready var free_container := $FreeContainer
 @onready var texture_polygon := $SubViewportContainer/SubViewport/Polygon2D
 @onready var texture_subviewport: SubViewport = $SubViewportContainer/SubViewport
 
 const SCROLL_TIME := 0.2
 const SCROLL_SPAWN_TIME := 1.0
-const SCROLL_WAIT := 4.0
+const SCROLL_WAIT := 1.0
 const SMOOTH_SCROLL := false
 
 var scroll_amount := Vector2.ZERO
@@ -77,7 +78,8 @@ func _scroll_iter() -> bool:
 	create_tween().tween_property(self, "voronoi_offset", Vector2(0.0, offset_y), SCROLL_TIME).as_relative()
 	for child in container.get_children():
 		var brick: Brick = child
-		brick.create_tween().tween_property(brick, "position", scroll_amount, SCROLL_TIME).as_relative()
+		brick.tween = brick.create_tween()
+		brick.tween.tween_property(brick, "position", scroll_amount, SCROLL_TIME).as_relative()
 
 	if not is_inside_tree():
 		return false
@@ -107,6 +109,64 @@ func _ready() -> void:
 	_ready_create_bricks()
 	_scroll_loop()
 
+func _find_detached() -> Array[Brick]:
+	var stack: Array[int] = []
+	var bricks: Array[Brick] = []
+	bricks.resize(BRICKS_W * BRICKS_H)
+	bricks.fill(null)
+
+	for child in container.get_children():
+		var brick: Brick = child
+		var x := floori((brick.position.x - LEFT_OFFSET) / 32.0)
+		var y := floori((brick.position.y - TOP_OFFSET) / 32.0)
+		var index := x + y * BRICKS_W
+		if index >= bricks.size():
+			brick.queue_free()
+			continue
+		assert(bricks[index] == null)
+		brick.attached = false
+		bricks[index] = brick
+
+	for y in range(0, 2):
+		for x in range(BRICKS_W):
+			var index: int = x + y * BRICKS_W 
+			if bricks[index]:
+				bricks[index].attached = true
+				stack.push_back(index)
+
+
+	var out := ""
+	for y in range(BRICKS_H):
+		for x in range(BRICKS_W):
+			var index: int = x + y * BRICKS_W 
+			out += "X" if bricks[index] else "."
+		out += "\n"
+	$Debug.text = out
+
+	while stack:
+		var index: int = stack.pop_back()
+		var x := index % BRICKS_W
+		@warning_ignore("integer_division")
+		var y := index / BRICKS_W
+		var indices: Array[int] = []  
+		if x > 0:
+			indices.append(x - 1 + y * BRICKS_W)
+		if y > 0:
+			indices.append(x + (y - 1) * BRICKS_W)
+		if x < BRICKS_W:
+			indices.append(x + 1 + y * BRICKS_W)
+		if y < BRICKS_H:
+			indices.append(x + (y + 1) * BRICKS_W)
+		for other in indices:
+			if bricks[other]:
+				bricks[other].attached = true
+				bricks[other] = null
+				stack.push_back(other)
+
+	return bricks.filter(func(x): return x)
+
 func _process(_delta: float) -> void:
 	if SMOOTH_SCROLL:
 		_update_voronoi_parameters()
+	# _find_detached()
+	# print(_find_detached().size())

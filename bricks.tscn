@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ks1v6g6xn1p7"]
+[gd_scene load_steps=5 format=3 uid="uid://ks1v6g6xn1p7"]
 
 [ext_resource type="Script" path="res://bricks.gd" id="1_fj2te"]
 [ext_resource type="Shader" path="res://voronoi.gdshader" id="2_iq0s6"]
+[ext_resource type="FontFile" uid="uid://rpw4xn27rpv2" path="res://fonts/Perfect DOS VGA 437.ttf" id="3_fpbqc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4tget"]
 shader = ExtResource("2_iq0s6")
@@ -30,3 +31,8 @@ material = SubResource("ShaderMaterial_4tget")
 polygon = PackedVector2Array(0, 0, 540, 0, 540, 960, 0, 960)
 
 [node name="Container" type="Node2D" parent="."]
+
+[node name="Debug" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("3_fpbqc")

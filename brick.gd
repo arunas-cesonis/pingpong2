@@ -7,7 +7,8 @@ extends StaticBody2D
 enum Status {OK, DAMAGED, DEAD}
 
 var status: Status = Status.OK
-var gen: int = -1
+var tween: Tween = null
+var attached: bool = true
 
 var UNHEALTHY: Color = Color.hex(0xc8d627ff)
 var HEALTHY: Color = Color.WHITE
@@ -43,6 +44,8 @@ func apply_damage(amount: int) -> bool:
 	return false
 
 func _ready() -> void:
+	# self.modulate.a = 0.0
+	# create_tween().tween_property(self, "modulate:a", 1.0, 0.2)
 	_update_health_visuals()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
