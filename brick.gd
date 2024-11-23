@@ -8,7 +8,6 @@ enum Status {OK, DAMAGED, DEAD}
 
 var status: Status = Status.OK
 var tween: Tween = null
-var attached: bool = true
 
 var UNHEALTHY: Color = Color.hex(0xc8d627ff)
 var HEALTHY: Color = Color.WHITE
