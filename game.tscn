@@ -144,7 +144,7 @@ position = Vector2(-2, 494)
 position = Vector2(542, 494)
 
 [node name="WallTop" parent="." instance=ExtResource("3_bbarr")]
-position = Vector2(174, 0)
+position = Vector2(174, -2)
 rotation = 1.5708
 scale = Vector2(1, -1)
 
