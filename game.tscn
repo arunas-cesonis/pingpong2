@@ -41,7 +41,7 @@ wall_angle_limit_min = 70.541
 metadata/_edit_vertical_guides_ = [-504.0]
 
 [node name="Bricks" parent="." instance=ExtResource("3_8u3lx")]
-position = Vector2(16, 14)
+position = Vector2(14, 14)
 
 [node name="Player" type="AnimatableBody2D" parent="."]
 position = Vector2(270, 944)
@@ -138,10 +138,10 @@ position = Vector2(123, 81)
 polygon = PackedVector2Array(0, 0, 200, 0, 200, 16, 0, 16)
 
 [node name="WallVertical" parent="." instance=ExtResource("3_bbarr")]
-position = Vector2(-2, 496)
+position = Vector2(-2, 494)
 
 [node name="WallVertical2" parent="." instance=ExtResource("3_bbarr")]
-position = Vector2(542, 496)
+position = Vector2(542, 494)
 
 [node name="WallTop" parent="." instance=ExtResource("3_bbarr")]
 position = Vector2(174, 0)
