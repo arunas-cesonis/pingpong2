@@ -18,10 +18,11 @@ var voronoi_image: Image = null
 
 const SCROLL_TIME := 0.2
 const SCROLL_SPAWN_TIME := 1.0
-const SCROLL_WAIT := 4.0
+const SCROLL_WAIT := 1.0
 const SMOOTH_SCROLL := false
 
 var scroll_amount := Vector2.ZERO
+var scrolling := false
 
 func _update_voronoi_parameters() -> void:
 	texture_polygon.material.set_shader_parameter("scale", voronoi_scale)
@@ -75,6 +76,8 @@ func _scroll_iter() -> bool:
 	create_tween().tween_property(self, "voronoi_offset", Vector2(0.0, offset_y), SCROLL_TIME).as_relative()
 	for child in container.get_children():
 		var brick: Brick = child
+		if brick.attached == 0:
+			continue
 		brick.tween = brick.create_tween()
 		brick.tween.tween_property(brick, "position", scroll_amount, SCROLL_TIME).as_relative()
 
@@ -105,6 +108,52 @@ func _ready() -> void:
 	await _regen_voronoi_image()
 	_ready_create_bricks()
 	_scroll_loop()
+
+func _in_bounds(v: Vector2i) -> bool:
+	return v.x >= 0 and v.y >= 0 and v.x < BRICKS_W and v.y < BRICKS_H 
+
+var directions: Array[Vector2i] = [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]
+
+func _physics_process(delta: float) -> void:
+	_run_bricks(delta)
+
+func _run_bricks(delta: float) -> void:
+	var bricks: Array[Array] = []
+	bricks.resize(BRICKS_H)
+	for y in range(bricks.size()):
+		bricks[y].resize(BRICKS_W)
+		bricks[y].fill(null)
+
+	for child in container.get_children():
+		var b: Brick = child 
+		var x := floori(b.position.x / brick_rect.size.x)
+		var y := floori(b.position.y / brick_rect.size.y)
+		if y >= BRICKS_H:
+			b.queue_free()
+			continue
+		assert(bricks[y][x] == null)
+		b.attached = 0
+		bricks[y][x] = b
+
+	var stack: Array[Vector2i] = []
+	for y in range(0, 2):
+		for x in range(BRICKS_W):
+			if bricks[y][x]:
+				bricks[y][x].attached = x + 1
+				stack.push_back(Vector2i(x, y))
+
+	var attached: Array[Brick] = []
+	while stack:
+		var xy: Vector2i = stack.pop_back()  
+		for d in directions:
+			var next := xy + d
+			if not _in_bounds(next):
+				continue
+			var b: Brick = bricks[next.y][next.x]
+			if b and b.attached == 0:
+				b.attached = bricks[xy.y][xy.x].attached
+				attached.push_back(b)
+				stack.push_back(next)
 
 func _process(_delta: float) -> void:
 	if SMOOTH_SCROLL:

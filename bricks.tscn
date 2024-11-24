@@ -28,8 +28,3 @@ material = SubResource("ShaderMaterial_4tget")
 polygon = PackedVector2Array(0, 0, 540, 0, 540, 960, 0, 960)
 
 [node name="Container" type="Node2D" parent="."]
-
-[node name="Debug" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
-theme_override_font_sizes/font_size = 10
