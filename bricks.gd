@@ -76,7 +76,7 @@ func _scroll_iter() -> bool:
 	create_tween().tween_property(self, "voronoi_offset", Vector2(0.0, offset_y), SCROLL_TIME).as_relative()
 	for child in container.get_children():
 		var brick: Brick = child
-		if brick.attached == 0:
+		if not brick.attached:
 			continue
 		brick.tween = brick.create_tween()
 		brick.tween.tween_property(brick, "position", scroll_amount, SCROLL_TIME).as_relative()
@@ -114,10 +114,15 @@ func _in_bounds(v: Vector2i) -> bool:
 
 var directions: Array[Vector2i] = [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]
 
-func _physics_process(delta: float) -> void:
-	_run_bricks(delta)
+func _physics_process(_delta: float) -> void:
+	_run_bricks()
 
-func _run_bricks(delta: float) -> void:
+func _brick_grid_pos(pos: Vector2) -> Vector2i:
+	var x := floori(pos.x / brick_rect.size.x)
+	var y := floori(pos.y / brick_rect.size.y)
+	return Vector2i(x, y)
+ 
+func _run_bricks() -> void:
 	var bricks: Array[Array] = []
 	bricks.resize(BRICKS_H)
 	for y in range(bricks.size()):
@@ -126,13 +131,14 @@ func _run_bricks(delta: float) -> void:
 
 	for child in container.get_children():
 		var b: Brick = child 
-		var x := floori(b.position.x / brick_rect.size.x)
-		var y := floori(b.position.y / brick_rect.size.y)
+		var gp := _brick_grid_pos(b.position) 
+		var x := gp.x
+		var y := gp.y
 		if y >= BRICKS_H:
 			b.queue_free()
 			continue
 		assert(bricks[y][x] == null)
-		b.attached = 0
+		b.attached = false
 		bricks[y][x] = b
 
 	var stack: Array[Vector2i] = []
@@ -142,7 +148,6 @@ func _run_bricks(delta: float) -> void:
 				bricks[y][x].attached = x + 1
 				stack.push_back(Vector2i(x, y))
 
-	var attached: Array[Brick] = []
 	while stack:
 		var xy: Vector2i = stack.pop_back()  
 		for d in directions:
@@ -150,9 +155,8 @@ func _run_bricks(delta: float) -> void:
 			if not _in_bounds(next):
 				continue
 			var b: Brick = bricks[next.y][next.x]
-			if b and b.attached == 0:
-				b.attached = bricks[xy.y][xy.x].attached
-				attached.push_back(b)
+			if b and not b.attached:
+				b.attached = true
 				stack.push_back(next)
 
 func _process(_delta: float) -> void:

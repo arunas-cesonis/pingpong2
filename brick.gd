@@ -8,7 +8,8 @@ enum Status {OK, DAMAGED, DEAD}
 
 var status: Status = Status.OK
 var tween: Tween = null
-var attached: int = 1
+var attached: bool = false
+var was_attached: bool = false
 var velocity: Vector2 = Vector2.ZERO
 
 var UNHEALTHY: Color = Color.hex(0xc8d627ff)
@@ -52,7 +53,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if attached == 0:
+	if not attached:
 		modulate.r = 0.0
 	else:
 		modulate.r = 1.0
