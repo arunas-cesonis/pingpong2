@@ -10,13 +10,6 @@ var bounce = {
 	angle_max = 0.0,
 }
 
-var influence = {
-	ball = Vector2.ZERO,
-	player = Vector2.ZERO,
-	min_distance = 0.0,
-	max_distance = 0.0,
-}
-
 var values = {}
 const BOUNCE_SIZE := 100.0
 	
@@ -56,26 +49,11 @@ func _draw_bounce(b: Dictionary) -> void:
 	else:
 		_draw_text("%.2f" % [rad_to_deg(angle_u)], p + vout)
 
-func _draw_influence(d: Dictionary) -> void:
-	var player: Vector2 = d.player
-	var ball: Vector2 = d.ball
-	var min_distance: float = d.min_distance
-	var max_distance: float = d.max_distance
-	var distance := absf(player.y - ball.y)
-	if distance <= max_distance and distance >= min_distance:
-		var a := Vector2(0.0, player.y - max_distance)
-		var b := Vector2(1080.0, player.y - max_distance)
-		draw_dashed_line(a, b, Color.WHITE, 2.0, 5.0, false)
-		a = Vector2(0.0, player.y - min_distance)
-		b = Vector2(1080.0, player.y - min_distance)
-		draw_dashed_line(a, b, Color.WHITE, 2.0, 5.0, false)
-
 func _draw():
 	if not OS.has_feature('debug'):
 		return
 	# bounce
 	_draw_bounce(bounce)
-	_draw_influence(influence)
 	# values
 	var h := 132.0
 	for k in values:

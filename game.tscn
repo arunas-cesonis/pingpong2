@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b6p7ocg803f8u" path="res://wall.tscn" id="3_bbarr"]
 [ext_resource type="Texture2D" uid="uid://bhbvodns08cne" path="res://graphics1.png" id="3_hoi0h"]
 [ext_resource type="Script" path="res://debug.gd" id="3_xqd3c"]
+[ext_resource type="PackedScene" uid="uid://7v3f2uoavcxq" path="res://ball.tscn" id="5_acxhm"]
 [ext_resource type="AudioStream" uid="uid://cl451kypv58qc" path="res://sounds/boost.wav" id="6_mal7r"]
 [ext_resource type="AudioStream" uid="uid://cbc0d7cqr4yhm" path="res://sounds/collision2.wav" id="7_s326o"]
 [ext_resource type="AudioStream" uid="uid://dslylnpndtw58" path="res://sounds/collision.wav" id="8_vli6k"]
@@ -24,9 +25,6 @@ point_count = 3
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2yc25"]
 size = Vector2(160, 32)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_wka3s"]
-radius = 16.0
 
 [node name="Game" type="Node2D"]
 process_mode = 1
@@ -100,21 +98,7 @@ region_rect = Rect2(16, 100, 100, 100)
 visible = false
 shape = SubResource("RectangleShape2D_2yc25")
 
-[node name="Ball" type="AnimatableBody2D" parent="."]
-position = Vector2(270, 480)
-sync_to_physics = false
-
-[node name="Sprite2D" type="Sprite2D" parent="Ball"]
-modulate = Color(0.639216, 0.627451, 1, 1)
-texture_filter = 1
-scale = Vector2(2, 2)
-texture = ExtResource("3_hoi0h")
-hframes = 2
-vframes = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
-visible = false
-shape = SubResource("CircleShape2D_wka3s")
+[node name="Ball" parent="." instance=ExtResource("5_acxhm")]
 
 [node name="Debug" type="Node2D" parent="."]
 script = ExtResource("3_xqd3c")
@@ -132,10 +116,6 @@ stream = ExtResource("9_hjfct")
 
 [node name="Boost" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("6_mal7r")
-
-[node name="BoostBar" type="Polygon2D" parent="."]
-position = Vector2(123, 81)
-polygon = PackedVector2Array(0, 0, 200, 0, 200, 16, 0, 16)
 
 [node name="WallVertical" parent="." instance=ExtResource("3_bbarr")]
 position = Vector2(-2, 494)
@@ -156,11 +136,3 @@ offset_bottom = 34.0
 scale = Vector2(0.991981, 1.00736)
 theme_override_font_sizes/font_size = 48
 text = "Score:"
-
-[node name="BoostLabel" type="Label" parent="."]
-offset_left = 21.0
-offset_top = 77.0
-offset_right = 70.0
-offset_bottom = 100.0
-scale = Vector2(0.991981, 1.00736)
-text = "Boost:"
