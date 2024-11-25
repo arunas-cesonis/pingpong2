@@ -9,13 +9,16 @@ extends Node2D
 # DONE. Mouse controls. Pad goes to mouse cursor with slight lag.
 # DONE. Slow down scrolling.
 # DONE. More gaps to extend the game.
-# Bricks that do not touch should fall down.
-# Buy power ups for score:
+
+### Buy power ups for score:
+### When score threshold is reached, allow to select one out of three.
 ## Power up how many bricks a ball can go through.
 ## Power up splash damage.
+
 ## Power up buy multiple balls.
 ## Power up critical boost other power ups.
 ## Power up horizontal boost. Limit reflection angle.
+# ????. When large chunk of bricks is detached from other bricks by collision, destroy the bricks.
 # Multi-hit brick explodes with radius.
 # Zone of influence:
 ## Destroy bricks.

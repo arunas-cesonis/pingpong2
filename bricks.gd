@@ -18,7 +18,7 @@ var voronoi_image: Image = null
 
 const SCROLL_TIME := 0.2
 const SCROLL_SPAWN_TIME := 1.0
-const SCROLL_WAIT := 1.0
+const SCROLL_WAIT := 4.0
 const SMOOTH_SCROLL := false
 
 var scroll_amount := Vector2.ZERO
@@ -94,7 +94,7 @@ func _scroll_iter() -> bool:
 		# Exit in case this node is no longer attached (i.e. a game has ended)
 		if not is_inside_tree():
 			return false
-		await get_tree().create_timer(time_per_brick, false, true).timeout
+		# await get_tree().create_timer(time_per_brick, false, true).timeout
 		_add_brick_checked(x, 0)
 
 	return true
