@@ -4,7 +4,7 @@ const BrickTscn = preload("res://brick.tscn")
 const Brick = preload("res://brick.gd")
 
 const BRICKS_W := 16
-const BRICKS_H := 28
+const BRICKS_H := 29
 const BRICKS_INIT_H := 16
 var brick_rect := Rect2()
 var voronoi_scale := Vector2(10.0, 10.0)
@@ -45,7 +45,6 @@ func _brick_position(x: int, y: int) -> Vector2:
 
 func _create_brick(p: Vector2) -> Brick:
 	var brick: Brick = BrickTscn.instantiate()
-	brick.initial_health = 1;
 	brick.position = p
 	return brick
 
@@ -78,8 +77,8 @@ func _scroll_iter() -> bool:
 		var brick: Brick = child
 		if not brick.attached:
 			continue
-		brick.tween = brick.create_tween()
-		brick.tween.tween_property(brick, "position", scroll_amount, SCROLL_TIME).as_relative()
+		var tween := brick.create_tween()
+		tween.tween_property(brick, "position", scroll_amount, SCROLL_TIME).as_relative()
 
 	if not is_inside_tree():
 		return false
@@ -87,14 +86,11 @@ func _scroll_iter() -> bool:
 
 	# Fetch the texture image
 	await _regen_voronoi_image()
+	if not is_inside_tree():
+		return false
 
 	# Spawn new bricks one-by-one
-	var time_per_brick := SCROLL_SPAWN_TIME / BRICKS_W
 	for x in range(BRICKS_W):
-		# Exit in case this node is no longer attached (i.e. a game has ended)
-		if not is_inside_tree():
-			return false
-		# await get_tree().create_timer(time_per_brick, false, true).timeout
 		_add_brick_checked(x, 0)
 
 	return true
