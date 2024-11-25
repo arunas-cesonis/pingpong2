@@ -71,6 +71,7 @@ var brick_progress := 0.0
 
 @onready var ball_speed = base_ball_speed
 @onready var ball_direction = initial_ball_direction
+var ball_hits := 2
 
 signal finished(score: int)
 
@@ -139,8 +140,6 @@ func _physics_process(delta: float) -> void:
 	var collision = ball.move_and_collide(_ball_velocity() * delta, false, safe_margin)
 	if collision:
 		var normal: Vector2 = collision.get_normal()
-		var bounce_angle_limit_min := 0.0
-		var bounce_angle_limit_max := 90.0
 
 		if collision.get_collider() == player:
 			_play_sound($Sounds/Collision)
@@ -156,6 +155,7 @@ func _physics_process(delta: float) -> void:
 
 		elif collision.get_collider() is Brick:
 			var brick := collision.get_collider() as Brick
+
 			if brick.apply_damage(1):
 				_play_sound($Sounds/Destroy)
 				score += 1
@@ -166,6 +166,7 @@ func _physics_process(delta: float) -> void:
 					add_child(tmp)
 			else:
 				_play_sound($Sounds/Collision2)
+
 			var amin := deg_to_rad(brick_angle_limit_min)
 			var amax := deg_to_rad(brick_angle_limit_max)
 			ball_direction = ball_direction.bounce(normal).normalized()
@@ -176,10 +177,6 @@ func _physics_process(delta: float) -> void:
 			var amax := deg_to_rad(wall_angle_limit_max)
 			ball_direction = ball_direction.bounce(normal).normalized()
 			ball_direction = _limit_bounce_angle(normal, ball_direction, amin, amax)
-
-
-		bounce_angle_limit_min = deg_to_rad(bounce_angle_limit_min)
-		bounce_angle_limit_max = deg_to_rad(bounce_angle_limit_max)
 
 	_calc_influence()
 
