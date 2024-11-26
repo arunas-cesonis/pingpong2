@@ -29,12 +29,10 @@ size = Vector2(160, 32)
 [node name="Game" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_jahp3")
-influence_min_distance = 30.0
 influence_curve = SubResource("Curve_ctkgm")
 reflect_amount = 2.0
 spawn_on_collision = ExtResource("2_g117g")
 ball_speed_player_collision = SubResource("Curve_50j4u")
-ball_speed_player_duration = 2.0
 wall_angle_limit_min = 70.541
 metadata/_edit_vertical_guides_ = [-504.0]
 
